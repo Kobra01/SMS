@@ -1,0 +1,7 @@
+$ cat .gitignore
+#Temp Dateien
+*~
+
+#zu ignorierende Ordner
+api/mksec/config/core.php
+Test*/
