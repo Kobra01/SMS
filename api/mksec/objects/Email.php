@@ -2,9 +2,6 @@
 
 // 'Email' Object
 class Email {
-
-    //File with Strings/Texts
-    include_once 'config/strings.php';
     
     // database connection and table name
     private $conn;
@@ -58,12 +55,15 @@ class Email {
     // Private Function
     private function send_mail() {
 
+        $object = "SMS - E-Mail bestätigen"
         $from = "From: MKS - Software <noreply@mks-software.de>";
-        $text = DE_EVERIFY_TEXT."\r\n \r\n https://mks-software.de/sms/api/mksec/confirm_email.php?code=".$code;
+        $text = "Um Ihre E-Mail zu bestätigen und damit ihren Account freizuschalten, klicken sie bitte auf den nachfolgenden Link oder kopieren diesen in ihren Browser:
+                \r\n
+                \r\n https://mks-software.de/sms/api/mksec/confirm_email.php?code=".$code;
  
-        mail($this->email, DE_EVERIFY_OBJECT, DE_EVERIFY_TEXT, $from);
+        mail($this->email, $object, $text, $from);
 
-        return;
+        return true;
 
     }
 
