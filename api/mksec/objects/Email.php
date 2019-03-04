@@ -55,7 +55,7 @@ class Email {
     // Private Function
     private function send_mail() {
 
-        $object = "SMS - E-Mail bestätigen"
+        $object = "SMS - E-Mail bestätigen";
         $from = "From: MKS - Software <noreply@mks-software.de>";
         $text = "Um Ihre E-Mail zu bestätigen und damit ihren Account freizuschalten, klicken sie bitte auf den nachfolgenden Link oder kopieren diesen in ihren Browser:
                 \r\n
