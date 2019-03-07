@@ -63,7 +63,7 @@ class User{
     
         // execute the query, also check if query was successful
         if($stmt->execute()){
-            $this->id = $stmt->$stmt->lastInsertId();
+            $this->id = $this->conn->lastInsertId();
             return true;
         }
     
