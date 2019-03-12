@@ -72,3 +72,5 @@ class User{
  
 // emailExists() method will be here
 }
+
+?>

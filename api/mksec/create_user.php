@@ -10,14 +10,25 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once 'config/Database.php';
 include_once 'objects/User.php';
 include_once 'objects/Email.php';
+
+// files and uses for sending email
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'libs/phpmailer/src/Exception.php';
+require 'libs/phpmailer/src/PHPMailer.php';
+require 'libs/phpmailer/src/SMTP.php';
  
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
+
+// instantiate mail object
+$mail = new PHPMailer(true);                              // Passing `true` enables exceptions
  
-// instantiate product object
+// instantiate other objects
 $user = new User($db);
-$email = new Email($db);
+$email = new Email($db, $mail);
  
 // get posted data
 $data = json_decode(file_get_contents("php://input"));

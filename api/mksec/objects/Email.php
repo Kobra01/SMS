@@ -5,7 +5,9 @@ class Email {
     
     // database connection and table name
     private $conn;
+    private $mailer;
     private $table_name = "codes";
+    private $type = "1";
 
     // object properties
     public $id;
@@ -14,8 +16,9 @@ class Email {
     public $user_id;
  
     // constructor
-    public function __construct($db){
+    public function __construct($db, $mail){
         $this->conn = $db;
+        $this->mailer = $mail;
     }
 
     //create new E-Mail verify code
@@ -36,32 +39,56 @@ class Email {
 
         $this->code=htmlspecialchars(strip_tags($this->code));
         $this->user_id=htmlspecialchars(strip_tags($this->user_id));
+        $this->type=htmlspecialchars(strip_tags($this->type));
 
         $stmt->bindParam(':user', $this->user_id);
         $stmt->bindParam(':code', $this->code);
-        $stmt->bindParam(':type', '1');
+        $stmt->bindParam(':type', $this->type);
 
         // exit if failed
         if(!$stmt->execute()){
             return false;
         }
 
-        send_mail();
+        if(!sendMail()){
+            return false;
+        }
 
         return true;
 
     }
 
     // Private Function
-    private function send_mail() {
+    private function sendMail() {
 
-        $object = "SMS - E-Mail bestätigen";
-        $from = "From: MKS - Software <noreply@mks-software.de>";
-        $text = "Um Ihre E-Mail zu bestätigen und damit ihren Account freizuschalten, klicken sie bitte auf den nachfolgenden Link oder kopieren diesen in ihren Browser:
+        try {
+            //Server settings
+            $this->mailer->SMTPDebug = 0;                                   // Enable verbose debug output
+            $this->mailer->isSMTP();                                        // Set mailer to use SMTP
+            $this->mailer->Host = 'mx2f80.netcup.net';                      // Specify main and backup SMTP servers
+            $this->mailer->SMTPAuth = true;                                 // Enable SMTP authentication
+            $this->mailer->Username = 'noreply@mks-software.de';            // SMTP username
+            $this->mailer->Password = 'secret';                             // SMTP password
+            $this->mailer->SMTPSecure = 'tls';                              // Enable TLS encryption, `ssl` also accepted
+            $this->mailer->Port = 587;                                      // TCP port to connect to
+
+            //Recipients
+            $this->mailer->setFrom('noreply@mks-software.de', 'noreply@mks-software.de');
+            $this->mailer->addAddress($this->email);                        // Name is optional
+
+            //Content
+            $this->mailer->isHTML(true);                                    // Set email format to HTML
+            $this->mailer->Subject = 'SMS - E-Mail bestätigen';
+            $etext = "Um Ihre E-Mail zu bestätigen und damit ihren Account freizuschalten, klicken sie bitte auf den nachfolgenden Link oder kopieren diesen in ihren Browser:
                 \r\n
                 \r\n https://mks-software.de/sms/api/mksec/confirm_email.php?code=".$code;
- 
-        mail($this->email, $object, $text, $from);
+            $this->mailer->Body    = $etext;
+            $this->mailer->AltBody = strip_tags($etext);
+
+            $this->mailer->send();
+        } catch (Exception $e) {
+            return false;
+        }
 
         return true;
 
