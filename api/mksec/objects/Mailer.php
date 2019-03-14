@@ -4,62 +4,19 @@
 class Email {
     
     // database connection and table name
-    private $conn;
     private $mailer;
     private $table_name = "codes";
-    private $type = "1";
 
     // object properties
-    public $id;
-    public $code;
     public $email;
-    public $user_id;
  
     // constructor
-    public function __construct($db, $mail){
-        $this->conn = $db;
-        $this->mailer = $mail;
-    }
-
-    //create new E-Mail verify code
-    public function verify_email() {
-
-        // Create Query
-        $query = 'INSERT INTO ' . $this->table_name . '
-                SET
-                    user = :user,
-                    code = :code,
-                    type = :type';
-
-
-        // prepare the query
-        $stmt = $this->conn->prepare($query);
-
-        $this->code = substr(md5(time().$email), 0, 32);
-
-        $this->code=htmlspecialchars(strip_tags($this->code));
-        $this->user_id=htmlspecialchars(strip_tags($this->user_id));
-        $this->type=htmlspecialchars(strip_tags($this->type));
-
-        $stmt->bindParam(':user', $this->user_id);
-        $stmt->bindParam(':code', $this->code);
-        $stmt->bindParam(':type', $this->type);
-
-        // exit if failed
-        if(!$stmt->execute()){
-            return false;
-        }
-
-        if(!$this->sendMail()){
-            return false;
-        }
-
-        return true;
-
+    public function __construct($phpmail){
+        $this->mailer = $phpmail;
     }
 
     // Private Function
-    private function sendMail() {
+    private function sendVerifyMail($textcode) {
 
         try {
             //Server settings
@@ -80,10 +37,10 @@ class Email {
             $this->mailer->isHTML(true);                                    // Set email format to HTML
             $this->mailer->Subject = 'SMS - E-Mail bestätigen';
             $etext = '<p>   Herzlich Willkommen bei MKS-Software, <br>
-                            bitte klicken sie auf diesen <a href="https://mks-software.de/sms/api/mksec/confirm_email.php?code='.$this->code.'>Link</a> <br>
+                            bitte klicken sie auf diesen <a href="https://mks-software.de/sms/api/mksec/confirm_email.php?code='.$textcode.'>Link</a> <br>
                             <br>
                             oder kopieren diese URL in ihren Browser: <br>
-                            https://mks-software.de/sms/api/mksec/confirm_email.php?code='.$this->code.'</p>';
+                            https://mks-software.de/sms/api/mksec/confirm_email.php?code='.$textcode.'</p>';
             $this->mailer->Body    = $etext;
             $this->mailer->AltBody = strip_tags($etext);
 

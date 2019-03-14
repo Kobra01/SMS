@@ -9,7 +9,8 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // files needed to connect to database
 include_once 'config/Database.php';
 include_once 'objects/User.php';
-include_once 'objects/Email.php';
+include_once 'objects/Mailer.php';
+include_once 'objects/Code.php';
 
 // files and uses for sending email
 use PHPMailer\PHPMailer\PHPMailer;
@@ -24,11 +25,12 @@ $database = new Database();
 $db = $database->getConnection();
 
 // instantiate mail object
-$mail = new PHPMailer(true);                              // Passing `true` enables exceptions
+$phpmailer = new PHPMailer(true);                              // Passing `true` enables exceptions
  
 // instantiate other objects
 $user = new User($db);
-$email = new Email($db, $mail);
+$mailer = new Mailer($phpmailer);
+$code = new Code($db);
  
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
@@ -52,21 +54,33 @@ if(!$user->create()){
     
 } else {
 
-    // Prepare Email verify
-    $email->email = $data->email;
-    $email->user_id = $user->id;
+    // Prepare Verify Code
+    $code->user_id = $user->id;
 
-    if(!$email->verify_email()){
-        // message if unable to send email
-
+    if (!$code->createCode(1)) {
+        
+        // // message if unable to create user
         http_response_code(400);
-        echo json_encode(array("error" => TRUE, "message" => "Unable to send email."));
+        echo json_encode(array("error" => TRUE, "message" => "Unable to create verify code."));
 
     } else {
- 
-        // set response code & answer
-        http_response_code(200);
-        echo json_encode(array("error" => FALSE, "message" => "User was created. Check your Emails."));
+        
+        // Prepare Email verify
+        $mailer->email = $data->email;
+
+        if (!$mailer->sendVerifyMail($code->code)) {
+
+            // message if unable to send email
+            http_response_code(400);
+            echo json_encode(array("error" => TRUE, "message" => "Unable to send email."));
+
+        } else {
+
+            // set response code & answer
+            http_response_code(200);
+            echo json_encode(array("error" => FALSE, "message" => "User was created. Check your Emails."));
+
+        }
     }
 }
 ?>
