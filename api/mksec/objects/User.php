@@ -4,7 +4,8 @@ class User{
  
     // database connection and table name
     private $conn;
-    private $table_name = "user";
+    private $user_table = "user";
+    private $code_table = "codes";
  
     // object properties
     public $id;
@@ -16,6 +17,7 @@ class User{
     public $email;
     public $password;
     public $state;
+    public $code;
  
     // constructor
     public function __construct($db){
@@ -27,7 +29,7 @@ class User{
     public function create(){
  
         // insert query
-        $query = "INSERT INTO " . $this->table_name . "
+        $query = "INSERT INTO " . $this->user_table . "
                 SET
                     firstname = :firstname,
                     lastname = :lastname,
@@ -68,6 +70,11 @@ class User{
         }
     
         return false;
+    }
+
+    //confirm email address
+    public function confirmEmail(){
+        return true;
     }
  
 // emailExists() method will be here
