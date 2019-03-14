@@ -35,7 +35,7 @@ class Email {
         // prepare the query
         $stmt = $this->conn->prepare($query);
 
-        $code = substr(md5(time().$email), 0, 32);
+        $this->code = substr(md5(time().$email), 0, 32);
 
         $this->code=htmlspecialchars(strip_tags($this->code));
         $this->user_id=htmlspecialchars(strip_tags($this->user_id));
@@ -79,9 +79,11 @@ class Email {
             //Content
             $this->mailer->isHTML(true);                                    // Set email format to HTML
             $this->mailer->Subject = 'SMS - E-Mail bestätigen';
-            $etext = "Um Ihre E-Mail zu bestätigen und damit ihren Account freizuschalten, klicken sie bitte auf den nachfolgenden Link oder kopieren diesen in ihren Browser:
-                \r\n
-                \r\n https://mks-software.de/sms/api/mksec/confirm_email.php?code=".$code;
+            $etext = '<p>   Herzlich Willkommen bei MKS-Software, <br>
+                            bitte klicken sie auf diesen <a href="https://mks-software.de/sms/api/mksec/confirm_email.php?code="'.$this->code.'>Link</a> <br>
+                            <br>
+                            oder kopieren diese URL in ihren Browser: <br>
+                            https://mks-software.de/sms/api/mksec/confirm_email.php?code='.$this->code.'</p>';
             $this->mailer->Body    = $etext;
             $this->mailer->AltBody = strip_tags($etext);
 
