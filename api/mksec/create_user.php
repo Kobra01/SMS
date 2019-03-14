@@ -60,7 +60,7 @@ if(!$user->create()){
         // message if unable to send email
 
         http_response_code(400);
-        echo json_encode(array("error" => TRUE, "message" => "Unable to verify email."));
+        echo json_encode(array("error" => TRUE, "message" => "Unable to send email."));
 
     } else {
  
