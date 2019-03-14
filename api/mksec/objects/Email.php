@@ -50,7 +50,7 @@ class Email {
             return false;
         }
 
-        if(!sendMail()){
+        if(!$this->sendMail()){
             return false;
         }
 
