@@ -1,7 +1,7 @@
 <?php
 
 // 'Email' Object
-class Email {
+class Mailer {
     
     // database connection and table name
     private $mailer;
@@ -9,6 +9,7 @@ class Email {
 
     // object properties
     public $email;
+    public $code;
  
     // constructor
     public function __construct($phpmail){
@@ -16,7 +17,7 @@ class Email {
     }
 
     // Private Function
-    private function sendVerifyMail($textcode) {
+    public function sendVerifyMail() {
 
         try {
             //Server settings
@@ -37,10 +38,10 @@ class Email {
             $this->mailer->isHTML(true);                                    // Set email format to HTML
             $this->mailer->Subject = 'SMS - E-Mail bestätigen';
             $etext = '<p>   Herzlich Willkommen bei MKS-Software, <br>
-                            bitte klicken sie auf diesen <a href="https://mks-software.de/sms/api/mksec/confirm_email.php?code='.$textcode.'>Link</a> <br>
+                            bitte klicken sie auf diesen <a href="https://mks-software.de/sms/api/mksec/confirm_email.php?code='.$this->code.'>Link</a> <br>
                             <br>
                             oder kopieren diese URL in ihren Browser: <br>
-                            https://mks-software.de/sms/api/mksec/confirm_email.php?code='.$textcode.'</p>';
+                            https://mks-software.de/sms/api/mksec/confirm_email.php?code='.$this->code.'</p>';
             $this->mailer->Body    = $etext;
             $this->mailer->AltBody = strip_tags($etext);
 
@@ -54,3 +55,5 @@ class Email {
     }
 
 }
+
+?>
