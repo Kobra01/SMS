@@ -72,6 +72,30 @@ class User{
 
     //update state of User
     public function updateState(){
+
+        // Create Query
+        $query = '  UPDATE
+                        ' . $this->table_name . '
+                    SET
+                        state = :state 
+                    WHERE
+                        id = :id';
+
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        $this->code=htmlspecialchars(strip_tags($this->state));
+        $this->type=htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':state', $this->state);
+        $stmt->bindParam(':id', $this->id);
+
+        // exit if failed
+        if(!$stmt->execute()){
+            return false;
+        }
+
         return true;
     }
  
