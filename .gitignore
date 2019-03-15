@@ -5,4 +5,5 @@ $ cat .gitignore
 #zu ignorierende Ordner
 api/mksec/config/core.php
 api/mksec/config/Database.php
+api/mksec/config/Mailer.php
 Test*/
