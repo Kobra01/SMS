@@ -77,11 +77,11 @@ class Code {
 
         $this->code=htmlspecialchars(strip_tags($this->code));
         $this->type=htmlspecialchars(strip_tags($this->type));
-        $this->type=htmlspecialchars(strip_tags($timestamp));
+        $timestamp=htmlspecialchars(strip_tags($timestamp));
 
         $stmt->bindParam(':code', $this->code);
         $stmt->bindParam(':type', $this->type);
-        $stmt->bindParam(':type', $timestamp);
+        $stmt->bindParam(':created', $timestamp);
 
         // exit if failed
         if(!$stmt->execute()){
