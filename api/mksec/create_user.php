@@ -56,8 +56,9 @@ if(!$user->create()){
 
     // Prepare Verify Code
     $code->user_id = $user->id;
+    $code->type = '1';
 
-    if (!$code->createCode(1)) {
+    if (!$code->createCode()) {
         
         // // message if unable to create user
         http_response_code(400);
@@ -67,8 +68,9 @@ if(!$user->create()){
         
         // Prepare Email verify
         $mailer->email = $data->email;
+        $mailer->code = $code->code;
 
-        if (!$mailer->sendVerifyMail($code->code)) {
+        if (!$mailer->sendVerifyMail()) {
 
             // message if unable to send email
             http_response_code(400);
