@@ -16,6 +16,7 @@ class User{
     public $email;
     public $password;
     public $state;
+    public $modified;
  
     // constructor
     public function __construct($db){
@@ -145,7 +146,54 @@ class User{
 
     }
  
-// emailExists() method will be here
+    // load user data by email
+    public function getUserByEmail(){
+        
+        // Create Query
+        $query = '  SELECT
+                        id, type, firstname, lastname, pwhash, username, school, state, modified
+                    FROM
+                        ' . $this->table_name . '
+                    WHERE
+                        email = :email
+                    LIMIT
+                        0,1';
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->email=htmlspecialchars(strip_tags($this->email));
+
+        // bind the values
+        $stmt->bindParam(':email', $this->email);
+
+        // exit if execute failed
+        if(!$stmt->execute()){
+            return false;
+        }
+
+        // if email exists, assign values to object properties for easy access and use for php sessions
+        if (!$stmt->rowCount() > 0) {
+            return false;
+        }
+
+        // get record details / values
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+ 
+        // assign values to object properties
+        $this->id = $row['id'];
+        $this->firstname = $row['firstname'];
+        $this->lastname = $row['lastname'];
+        $this->password = $row['pwhash'];
+        $this->type = $row['type'];
+        $this->username = $row['username'];
+        $this->school = $row['school'];
+        $this->state = $row['state'];
+        $this->modified = $row['modified'];
+
+        return true;
+    }
 }
 
 ?>
