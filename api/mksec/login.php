@@ -31,6 +31,14 @@ if(!$user->getUserByEmail()){
     die();
 }
 
+if ($user->state != 2) {
+    // message if blocked for loggin in
+    http_response_code(400);
+    echo json_encode(array("error" => TRUE, "message" => "User is actually blocked."));
+
+    die();
+}
+
 // generate json web token
 include_once 'config/core.php';
 include_once 'libs/php-jwt-master/src/BeforeValidException.php';
@@ -52,10 +60,10 @@ if(password_verify($data->password, $user->password)){
            "firstname" => $user->firstname,
            "lastname" => $user->lastname,
            "email" => $user->email,
-           "username" => $user->lastname,
-           "school" => $user->lastname,
-           "type" => $user->lastname,
-           "state" => $user->lastname,
+           "username" => $user->username,
+           "school" => $user->school,
+           "type" => $user->type,
+           "state" => $user->state,
            "modified" => $user->modified
        )
     );
