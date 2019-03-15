@@ -44,6 +44,15 @@ $user->lastname = $data->lastname;
 $user->email = $data->email;
 $user->password = $data->password;
 
+if ($user->userExist()) {
+
+    // // message if unable to create user
+    http_response_code(400);
+    echo json_encode(array("error" => TRUE, "message" => "User already exist."));
+
+    die();
+}
+
  
 // create the user
 if(!$user->create()){
