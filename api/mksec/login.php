@@ -33,7 +33,7 @@ if(!$user->getUserByEmail()){
 
 if ($user->state != 2) {
     // message if blocked for loggin in
-    http_response_code(400);
+    http_response_code(401);
     echo json_encode(array("error" => TRUE, "message" => "User is actually blocked."));
 
     die();
