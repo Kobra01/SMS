@@ -26,6 +26,7 @@ $db = $database->getConnection();
 
 // instantiate mail object
 $phpmailer = new PHPMailer(true);                              // Passing `true` enables exceptions
+include_once 'config/Mailer.php';
  
 // instantiate other objects
 $user = new User($db);

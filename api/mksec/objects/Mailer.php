@@ -20,15 +20,6 @@ class Mailer {
     public function sendVerifyMail() {
 
         try {
-            //Server settings
-            $this->mailer->SMTPDebug = 0;                                   // Enable verbose debug output
-            $this->mailer->isSMTP();                                        // Set mailer to use SMTP
-            $this->mailer->Host = 'mx2f80.netcup.net';                      // Specify main and backup SMTP servers
-            $this->mailer->SMTPAuth = true;                                 // Enable SMTP authentication
-            $this->mailer->Username = 'noreply@mks-software.de';            // SMTP username
-            $this->mailer->Password = 'secret';                             // SMTP password
-            $this->mailer->SMTPSecure = 'tls';                              // Enable TLS encryption, `ssl` also accepted
-            $this->mailer->Port = 587;                                      // TCP port to connect to
 
             //Recipients
             $this->mailer->setFrom('noreply@mks-software.de', 'noreply@mks-software.de');
