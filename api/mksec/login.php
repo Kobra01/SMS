@@ -43,11 +43,11 @@ use \Firebase\JWT\JWT;
 if(password_verify($data->password, $user->password)){
  
     $token = array(
-       "iss" => $iss,
-       "aud" => $aud,
-       "iat" => $iat,
-       "nbf" => $nbf,
-       "data" => array(
+       /*   "iss" => $iss,
+            "aud" => $aud,
+            "iat" => $iat,
+            "nbf" => $nbf,*/
+        "data" => array(
            "id" => $user->id,
            "firstname" => $user->firstname,
            "lastname" => $user->lastname,
@@ -72,7 +72,8 @@ if(password_verify($data->password, $user->password)){
                 "jwt" => $jwt
             )
         );
- 
+    
+    die();
 }
  
 // set response code
