@@ -99,9 +99,37 @@ class Code {
         $this->id = $row['id'];
         $this->user_id = $row['user'];
 
+        $this->clearCodes();
+
         return true;
     }
 
+    private function clearCodes(){
+        
+        // Create Query
+        $query = '  DELETE FROM
+                        ' . $this->table_name . '
+                    WHERE
+                        created < :created';
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        $deleteTime = strtotime('-168 hours');
+    	$deltimestamp = date('Y-m-d H:i:s', $deleteTime);
+
+        $deltimestamp=htmlspecialchars(strip_tags($deltimestamp));
+
+        $stmt->bindParam(':created', $deltimestamp);
+
+        // exit if failed
+        if(!$stmt->execute()){
+            return false;
+        }
+
+        return true;
+
+    }
 }
 
 ?>
