@@ -98,6 +98,52 @@ class User{
 
         return true;
     }
+
+    //check if user already exist
+    public function userExist(){
+        
+        // Create Query
+        $query = '  SELECT
+                        id
+                    FROM
+                        ' . $this->table_name . '
+                    WHERE
+                        ( username = :username AND school = :school )
+                    OR
+                        email = :email
+                    OR
+                        ( firstname = :firstname AND lastname = :lastname )';
+
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->firstname=htmlspecialchars(strip_tags($this->firstname));
+        $this->lastname=htmlspecialchars(strip_tags($this->lastname));
+        $this->email=htmlspecialchars(strip_tags($this->email));
+        $this->school=htmlspecialchars(strip_tags($this->school));
+        $this->username=htmlspecialchars(strip_tags($this->username));
+    
+        // bind the values
+        $stmt->bindParam(':firstname', $this->firstname);
+        $stmt->bindParam(':lastname', $this->lastname);
+        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':school', $this->school);
+        $stmt->bindParam(':username', $this->username);
+
+        // exit if failed
+        if(!$stmt->execute()){
+            return true;
+        }
+        
+        if ($stmt->rowCount() > 0) {
+            return true;
+        }
+
+        return false;
+
+    }
  
 // emailExists() method will be here
 }
