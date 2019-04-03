@@ -108,7 +108,7 @@ if (!$mailer->sendVerifyMail()) {
 }
 
 // set response code & answer
-http_response_code(200);
+http_response_code(201);
 echo json_encode(array("error" => FALSE, "message" => "User was created. Check your Emails."));
 
 ?>
