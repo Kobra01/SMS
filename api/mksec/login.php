@@ -20,16 +20,36 @@ $user = new User($db);
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
 
-// set product property values
-$user->email = $data->email;
-if(!$user->getUserByEmail()){
+//decide login by email or username
+if (isset($data->email)) {
 
-    // message if unable to find user
-    http_response_code(400);
-    echo json_encode(array("error" => TRUE, "message" => "User does not exist."));
+    // set product property values
+    $user->email = $data->email;
+    if(!$user->getUserByEmail()){
 
-    die();
+        // message if unable to find user
+        http_response_code(400);
+        echo json_encode(array("error" => TRUE, "message" => "User does not exist."));
+
+        die();
+    }
+
+} else {
+    // set product property values
+    $user->username = $data->username;
+    $user->school = $data->school;
+    if(!$user->getUserByUsername()){
+
+        // message if unable to find user
+        http_response_code(400);
+        echo json_encode(array("error" => TRUE, "message" => "User does not exist."));
+
+        die();
+    }
 }
+
+
+
 
 if ($user->state != 2) {
     // message if blocked for loggin in

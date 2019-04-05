@@ -194,6 +194,56 @@ class User{
 
         return true;
     }
+
+    // load user data by email
+    public function getUserByUsername(){
+        
+        // Create Query
+        $query = '  SELECT
+                        id, type, firstname, lastname, pwhash, email, state, modified
+                    FROM
+                        ' . $this->table_name . '
+                    WHERE
+                        ( username = :username AND school = :school )
+                    LIMIT
+                        0,1';
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->username=htmlspecialchars(strip_tags($this->username));
+        $this->school=htmlspecialchars(strip_tags($this->school));
+
+        // bind the values
+        $stmt->bindParam(':username', $this->username);
+        $stmt->bindParam(':school', $this->school);
+
+        // exit if execute failed
+        if(!$stmt->execute()){
+            return false;
+        }
+
+        // if email exists, assign values to object properties for easy access and use for php sessions
+        if (!$stmt->rowCount() > 0) {
+            return false;
+        }
+
+        // get record details / values
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+ 
+        // assign values to object properties
+        $this->id = $row['id'];
+        $this->firstname = $row['firstname'];
+        $this->lastname = $row['lastname'];
+        $this->password = $row['pwhash'];
+        $this->type = $row['type'];
+        $this->email = $row['email'];
+        $this->state = $row['state'];
+        $this->modified = $row['modified'];
+
+        return true;
+    }
 }
 
 ?>
