@@ -87,7 +87,7 @@ $code->type = '1';
 
 if (!$code->createCode()) {
       
-    // message if unable to create user
+    // message if unable to create code
     http_response_code(400);
     echo json_encode(array("error" => TRUE, "message" => "Unable to create verify code."));
 

@@ -29,26 +29,23 @@ if (!$code->verifyCode()) {
     // failed to confirm the email
     http_response_code(400);
     echo json_encode(array("error" => TRUE, "message" => "Failed to confirm code."));
-
-} else {
-
-    $user->id = $code->user_id;
-    $user->state = '1';
-
-    if (!$user->updateState()) {
-        
-        // failed to confirm the email
-        http_response_code(400);
-        echo json_encode(array("error" => TRUE, "message" => "Failed to change user state."));
-
-    } else {
-        
-        // set response code & answer
-        http_response_code(200);
-        echo json_encode(array("error" => FALSE, "message" => "Email address succesfull confirmed."));
-
-    }    
+    die();
 }
+
+$user->id = $code->user_id;
+$user->state = '1';
+
+if (!$user->updateState()) {
+    
+    // failed to confirm the email
+    http_response_code(400);
+    echo json_encode(array("error" => TRUE, "message" => "Failed to change user state."));
+    die();
+}
+    
+// set response code & answer
+http_response_code(200);
+echo json_encode(array("error" => FALSE, "message" => "Email address succesfull confirmed."));
 
 
 ?>
