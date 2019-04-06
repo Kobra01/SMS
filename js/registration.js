@@ -139,6 +139,5 @@ function onSubmit(e) {
     email.value = '';
     password.value = '';
     repeatpassword.value = '';
-
 }
 
