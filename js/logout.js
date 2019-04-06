@@ -1,0 +1,4 @@
+sessionStorage.clear();
+localStorage.clear();
+
+window.location.href = 'index.html';

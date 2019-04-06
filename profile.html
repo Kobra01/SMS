@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Hilfe - MKS SchulManager</title>
+    <title>Profil - MKS SchulManager</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="https://mks-software.de/skylite-framework-beta/css/style.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
@@ -12,7 +12,7 @@
 
     <!-- Header -->
     <header>
-        <a href="login.html" class="btn right">Login</a>
+        <a href="news.html" class="btn right">Neu <div style="display: inline" id="new">0</div></a>
         <i class="fas fa-bars" onclick="openNav()"></i>
     </header>
 
@@ -20,16 +20,11 @@
     <div id="main">
 
         <div class="card topic">
-            <h1>Hilfe</h1>
-            <h3>Fragen & Antworten</h3>
+            <h1>Profil</h1>
+            <h3>Deine persönliche Einstellungen</h3>
         </div>
 
-        <div class="card topic">
-            <br>
-            <h2 class="center-align">Hier werden sie zukünftig Hilfe erhalten</h2>
-            <br>
-            <p class="center-align">Schauen sie doch einfach später nochmal vorbei...</p>
-            <br>
+        <div class="card fullspinner">
         </div>
 
     </div>
@@ -45,10 +40,11 @@
     <div id="overlay" onclick="closeNav()"></div>
     <div id="sidenav">
         <i class="fas fa-times" id="closebtn" onclick="closeNav()"></i>
-        <a href="index.html">Start</a>
-        <a href="#">Spacer</a>
-        <a href="#">Spacer</a>
+        <a href="profile.html">Profil</a>
+        <a href="feed.html">Feed</a>
+        <a href="infos.html">Infos</a>
         <a href="help.html">Hilfe</a>
+        <a href="logout.html" class="btn">Logout</a>
     </div>
 
     <!-- Back 2 Top Button -->
@@ -60,5 +56,6 @@
 
     <!-- Scripts -->
     <script src="https://mks-software.de/skylite-framework-beta/js/main.js"></script>
+    <script src="js/profile.js"></script>
 
 </html>

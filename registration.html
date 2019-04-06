@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Login - MKS SchulManager</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="SkyLite Framework/css/style.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://mks-software.de/skylite-framework-beta/css/style.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 </head>
 <body>
@@ -19,56 +19,61 @@
     <!-- Content Area -->
     <div id="main">
 
-        <div class="card">
-            <br>
-            <br>
-            <br>
-            <h1 class="center-align">Registrierung</h1>
-            <h3 class="center-align">Kostenlos Account erstellen</h3>
-            <br>
-            <br>
-            <br>
+        <div class="card topic">
+            <h1>Registrierung</h1>
+            <h3>Kostenlos Account erstellen</h3>
         </div>
 
         <div class="card">
             <br>
             <h2>Daten:</h2>
             <br>
-            <form>
-                Art: <select name="type" id="type">
-                    <option value="SCLR" selected>Schüler</option>
-                    <option value="LEHR">Lehrer</option>
-                </select><br>
-                <br>
-                Benutzername: <input type="text" name="username" id="username"><br>
-                <br>
-                Schule: <select name="type" id="type">
-                        <option value="EGN66" selected>Einstein-Gymnasium Neuenhagen</option>
-                </select><br>
-                <br>
-                Vorname: <input type="text" name="firstname" id="firstname"><br>
-                <br>
-                Nachname: <input type="text" name="lastname" id="lastname"><br>
-                <br>
-                Email: <input type="email" name="email" id="email"><br>
-                <br>
-                Passwort: <input type="password" name="password" id="password"><br>
-                <br>
-                Passwort wiederholen: <input type="password" name="password" id="password"><br>
-                <br>
-                <input type="button" onclick="registration()" value="Registrieren">
+            <form id="form">
+                <label for="type">Art:</label>
+                <select name="type" id="type">
+                    <option value="STNT" selected>Schüler</option>
+                    <option value="TCHR">Lehrer</option>
+                </select>
+
+                <label for="username">Benutzername:</label>
+                <input type="text" name="username" id="username">
+
+                <label for="school">Schule:</label>
+                <select name="school" id="school">
+                    <option value="EGN66" selected>Einstein-Gymnasium Neuenhagen</option>
+                </select>
+                
+                <label for="firstname">Vorname:</label>
+                <input type="text" name="firstname" id="firstname">
+
+                <label for="lastname">Nachname:</label>
+                <input type="text" name="lastname" id="lastname">
+
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email">
+
+                <label for="password">Passwort:</label>
+                <input type="password" name="password" id="password">
+
+                <label for="repeatpassword">Passwort wiederholen:</label>
+                <input type="password" name="repeatpassword" id="repeatpassword">
+
+                <input type="checkbox" name="agbs" value="true" id="agbs"><p>bin mit den <a href="#">AGBs</a> einverstanden</p><br>
+                <input type="checkbox" name="pp" value="true" id="pp"><p>akzeptiere die <a href="#">Datenschutzerklärung</a></p><br>
+
+                <input type="submit" value="Registrieren">
             </form>
-            <br>
         </div>
+
+        <div id="msg"></div>
 
         <div class="card">
             <br>
             <h3>Account bereits erstellt?</h3>
             <br>
-            <p>Dann klick <a href="login.html" style="color: blue; text-decoration: underline;">hier</a><br>
+            <p>Dann klick <a href="login.html">hier</a><br>
             und logge dich ein.</p>
             <br>
-            
         </div>
 
     </div>
@@ -83,7 +88,7 @@
     <!-- Sidenav -->
     <div id="overlay" onclick="closeNav()"></div>
     <div id="sidenav">
-        <i class="closebtn fas fa-times" onclick="closeNav()"></i>
+        <i class="fas fa-times" id="closebtn" onclick="closeNav()"></i>
         <a href="index.html">Start</a>
         <a href="#">Spacer</a>
         <a href="#">Spacer</a>
@@ -98,6 +103,7 @@
 </body>
 
     <!-- Scripts -->
-    <script src="SkyLite Framework/js/main.js"></script>
+    <script src="https://mks-software.de/skylite-framework-beta/js/main.js"></script>
+    <script src="js/registration.js"></script>
 
 </html>
