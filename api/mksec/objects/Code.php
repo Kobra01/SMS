@@ -99,7 +99,31 @@ class Code {
         $this->id = $row['id'];
         $this->user_id = $row['user'];
 
+        $this->deleteCode();
         $this->clearCodes();
+
+        return true;
+    }
+
+    private function deleteCode(){
+        
+        // Create Query
+        $query = '  DELETE FROM
+                        ' . $this->table_name . '
+                    WHERE
+                        id = :id';
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':id', $this->id);
+
+        // exit if failed
+        if(!$stmt->execute()){
+            return false;
+        }
 
         return true;
     }
