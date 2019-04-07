@@ -29,10 +29,10 @@ class Mailer {
             $this->mailer->isHTML(true);                                    // Set email format to HTML
             $this->mailer->Subject = 'SMS - E-Mail bestätigen';
             $etext = '<p>   Herzlich Willkommen bei MKS-Software, <br>
-                            bitte klicken sie auf diesen <a href="https://mks-software.de/sms/api/mksec/confirm_email.php?code='.$this->code.'">Link</a> <br>
+                            bitte klicken sie auf diesen <a href="https://mks-software.de/sms/confirmemail.html?code='.$this->code.'">Link</a> <br>
                             <br>
                             oder kopieren diese URL in ihren Browser: <br>
-                            https://mks-software.de/sms/api/mksec/confirm_email.php?code='.$this->code.'</p>';
+                            https://mks-software.de/sms/confirmemail.html?code='.$this->code.'</p>';
             $this->mailer->Body    = $etext;
             $this->mailer->AltBody = strip_tags($etext);
 
