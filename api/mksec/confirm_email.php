@@ -19,14 +19,22 @@ $db = $database->getConnection();
 $user = new User($db);
 $code = new Code($db);
 
+if (!isset($_GET['code'])) {
+
+    // code missing
+    http_response_code(400);
+    echo json_encode(array("error" => TRUE, "message" => "The code is missing."));
+    die();
+}
+
 // set product property values
 $code->type = '1';
-$code->code = isset($_GET['code']) ? $_GET['code'] : die();
+$code->code = $_GET['code'];
 
 // verify code
 if (!$code->verifyCode()) {
 
-    // failed to confirm the email
+    // failed to confirm the code
     http_response_code(400);
     echo json_encode(array("error" => TRUE, "message" => "Failed to confirm code."));
     die();
@@ -37,7 +45,7 @@ $user->state = '1';
 
 if (!$user->updateState()) {
     
-    // failed to confirm the email
+    // failed to change the state
     http_response_code(400);
     echo json_encode(array("error" => TRUE, "message" => "Failed to change user state."));
     die();
