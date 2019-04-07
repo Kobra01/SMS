@@ -34,7 +34,7 @@ if (isset($data->email)) {
         die();
     }
 
-} elseif (isset($data->username) and isset($data->schooll)) {
+} elseif (isset($data->username) and isset($data->school)) {
     // set product property values
     $user->username = $data->username;
     $user->school = $data->school;
