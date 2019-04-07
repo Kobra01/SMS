@@ -1,7 +1,7 @@
 const content = document.querySelector('#main');
 const form = document.querySelector('#form');
 const email = document.querySelector('#email');
-const urlLogin = 'api/mksec/forgot_password.php';
+const url = 'api/mksec/forgot_password.php';
 const load = document.createElement('DIV');
 
 form.addEventListener('submit', onSubmit);
@@ -34,7 +34,7 @@ function onSubmit(e) {
         email: email.value
     };
         
-    fetch(urlLogin, {
+    fetch(url, {
         method: 'POST',
         mode: "cors",
         body: JSON.stringify(data), // data can be `string` or {object}!

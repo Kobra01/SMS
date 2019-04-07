@@ -34,7 +34,7 @@ if (isset($data->email)) {
         die();
     }
 
-} else {
+} elseif (isset($data->username) and isset($data->schooll)) {
     // set product property values
     $user->username = $data->username;
     $user->school = $data->school;
@@ -46,6 +46,12 @@ if (isset($data->email)) {
 
         die();
     }
+} else {
+    // message if unable to find user
+    http_response_code(400);
+    echo json_encode(array("error" => TRUE, "message" => "Some values are missing."));
+
+    die();
 }
 
 
