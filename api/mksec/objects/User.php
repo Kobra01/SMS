@@ -22,7 +22,8 @@ class User{
     public function __construct($db){
         $this->conn = $db;
     }
- 
+
+    // CRUD -> Create
 
     // create new user record
     public function create(){
@@ -71,34 +72,7 @@ class User{
         return false;
     }
 
-    //update state of User
-    public function updateState(){
-
-        // Create Query
-        $query = '  UPDATE
-                        ' . $this->table_name . '
-                    SET
-                        state = :state 
-                    WHERE
-                        id = :id';
-
-
-        // prepare the query
-        $stmt = $this->conn->prepare($query);
-
-        $this->code=htmlspecialchars(strip_tags($this->state));
-        $this->type=htmlspecialchars(strip_tags($this->id));
-
-        $stmt->bindParam(':state', $this->state);
-        $stmt->bindParam(':id', $this->id);
-
-        // exit if failed
-        if(!$stmt->execute()){
-            return false;
-        }
-
-        return true;
-    }
+    //CRUD -> Read
 
     //check if user already exist
     public function userExist(){
@@ -195,7 +169,7 @@ class User{
         return true;
     }
 
-    // load user data by email
+    // load user data by username
     public function getUserByUsername(){
         
         // Create Query
@@ -244,6 +218,72 @@ class User{
 
         return true;
     }
+
+    //CRUD -> Update
+
+    //update state of user
+    public function updateState(){
+
+        // Create Query
+        $query = '  UPDATE
+                        ' . $this->table_name . '
+                    SET
+                        state = :state 
+                    WHERE
+                        id = :id';
+
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        $this->code=htmlspecialchars(strip_tags($this->state));
+        $this->type=htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':state', $this->state);
+        $stmt->bindParam(':id', $this->id);
+
+        // exit if failed
+        if(!$stmt->execute()){
+            return false;
+        }
+
+        return true;
+    }
+
+    //reset password of user
+    public function resetPassword(){
+
+        // Create Query
+        $query = '  UPDATE
+                        ' . $this->table_name . '
+                    SET
+                        pwhash = :pwhash 
+                    WHERE
+                        id = :id';
+
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        $this->code=htmlspecialchars(strip_tags($this->password));
+        $this->type=htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':id', $this->id);
+
+        // hash the password before saving to database
+        $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
+        $stmt->bindParam(':pwhash', $password_hash);
+
+        // exit if failed
+        if(!$stmt->execute()){
+            return false;
+        }
+
+        return true;
+    }
+
+    //CRUD -> Delete
+
 }
 
 ?>
