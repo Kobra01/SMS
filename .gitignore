@@ -6,5 +6,5 @@ $ cat .gitignore
 api/mksec/config/core.php
 api/mksec/config/Database.php
 api/mksec/config/Mailer.php
-api/mksec/Database.php
+api/config/Database.php
 Test*/
