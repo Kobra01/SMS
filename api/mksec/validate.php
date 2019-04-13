@@ -6,7 +6,7 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET, POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
- 
+
 // required to decode jwt
 include_once dirname(__FILE__) . '/config/core.php';
 include_once dirname(__FILE__) . '/libs/php-jwt-master/src/BeforeValidException.php';
@@ -21,7 +21,6 @@ if (!isset($_SERVER["HTTP_AUTHORIZATION"])) {
     // message if no jwt set
     http_response_code(401);
     echo json_encode(array("error" => TRUE, "message" => "No Authorization-header set"));
-
     die();
 }
 
@@ -31,7 +30,6 @@ if (strcasecmp($type, "Bearer") == 0) {
     if (!$data) {
         http_response_code(401);
         echo json_encode(array("error" => TRUE, "message" => "JWT missing"));
-
         die();
     }
 
@@ -42,10 +40,10 @@ if (strcasecmp($type, "Bearer") == 0) {
     } 
     // if decode fails, it means jwt is invalid
     catch (Exception $e){
-     
+
         // set response code
         http_response_code(401);
-     
+
         // tell the user access denied  & show error message
         echo json_encode(array(
             "error" => TRUE,
@@ -59,7 +57,6 @@ if (strcasecmp($type, "Bearer") == 0) {
 } else {
 	http_response_code(401);
     echo json_encode(array("error" => TRUE, "message" => "Wrong Authorization-header set"));
-
     die();
 }
 

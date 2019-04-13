@@ -1,11 +1,11 @@
 <?php
 // 'user' object
 class User{
- 
+
     // database connection and table name
     private $conn;
     private $table_name = "user";
- 
+
     // object properties
     public $id;
     public $type;
@@ -17,7 +17,7 @@ class User{
     public $password;
     public $state;
     public $modified;
- 
+
     // constructor
     public function __construct($db){
         $this->conn = $db;
@@ -27,7 +27,7 @@ class User{
 
     // create new user record
     public function create(){
- 
+
         // insert query
         $query = "INSERT INTO " . $this->table_name . "
                 SET
@@ -38,10 +38,10 @@ class User{
                     school = :school,
                     username = :username,
                     type = :type";
- 
+
         // prepare the query
         $stmt = $this->conn->prepare($query);
- 
+
         // sanitize
         $this->firstname=htmlspecialchars(strip_tags($this->firstname));
         $this->lastname=htmlspecialchars(strip_tags($this->lastname));
@@ -50,7 +50,7 @@ class User{
         $this->school=htmlspecialchars(strip_tags($this->school));
         $this->username=htmlspecialchars(strip_tags($this->username));
         $this->type=htmlspecialchars(strip_tags($this->type));
-    
+
         // bind the values
         $stmt->bindParam(':firstname', $this->firstname);
         $stmt->bindParam(':lastname', $this->lastname);
@@ -58,17 +58,17 @@ class User{
         $stmt->bindParam(':school', $this->school);
         $stmt->bindParam(':username', $this->username);
         $stmt->bindParam(':type', $this->type);
-    
+
         // hash the password before saving to database
         $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
         $stmt->bindParam(':pwhash', $password_hash);
-    
+
         // execute the query, also check if query was successful
         if($stmt->execute()){
             $this->id = $this->conn->lastInsertId();
             return true;
         }
-    
+
         return false;
     }
 
@@ -99,7 +99,7 @@ class User{
         $this->email=htmlspecialchars(strip_tags($this->email));
         $this->school=htmlspecialchars(strip_tags($this->school));
         $this->username=htmlspecialchars(strip_tags($this->username));
-    
+
         // bind the values
         $stmt->bindParam(':firstname', $this->firstname);
         $stmt->bindParam(':lastname', $this->lastname);
@@ -119,7 +119,7 @@ class User{
         return false;
 
     }
- 
+
     // load user data by email
     public function getUserByEmail(){
         
@@ -154,7 +154,7 @@ class User{
 
         // get record details / values
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
- 
+
         // assign values to object properties
         $this->id = $row['id'];
         $this->firstname = $row['firstname'];
@@ -205,7 +205,7 @@ class User{
 
         // get record details / values
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
- 
+
         // assign values to object properties
         $this->id = $row['id'];
         $this->firstname = $row['firstname'];

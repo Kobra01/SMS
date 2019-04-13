@@ -5,7 +5,7 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
- 
+
 // files needed to connect to database
 include_once 'config/Database.php';
 include_once 'objects/User.php';
@@ -30,7 +30,6 @@ if (isset($data->email)) {
         // message if unable to find user
         http_response_code(400);
         echo json_encode(array("error" => TRUE, "message" => "User does not exist."));
-
         die();
     }
 
@@ -43,14 +42,12 @@ if (isset($data->email)) {
         // message if unable to find user
         http_response_code(400);
         echo json_encode(array("error" => TRUE, "message" => "User does not exist."));
-
         die();
     }
 } else {
     // message if unable to find user
     http_response_code(400);
     echo json_encode(array("error" => TRUE, "message" => "Some values are missing."));
-
     die();
 }
 
@@ -61,7 +58,6 @@ if ($user->state != 2) {
     // message if blocked for loggin in
     http_response_code(401);
     echo json_encode(array("error" => TRUE, "message" => "User is actually blocked."));
-
     die();
 }
 
@@ -75,28 +71,28 @@ use \Firebase\JWT\JWT;
 
 // check if email exists and if password is correct
 if(password_verify($data->password, $user->password)){
- 
+
     $token = array(
-       /*   "iss" => $iss,
+            /*   "iss" => $iss,
             "aud" => $aud,
             "iat" => $iat,
             "nbf" => $nbf,*/
         "data" => array(
-           "id" => $user->id,
-           "firstname" => $user->firstname,
-           "lastname" => $user->lastname,
-           "email" => $user->email,
-           "username" => $user->username,
-           "school" => $user->school,
-           "type" => $user->type,
-           "state" => $user->state,
-           "modified" => $user->modified
-       )
+            "id" => $user->id,
+            "firstname" => $user->firstname,
+            "lastname" => $user->lastname,
+            "email" => $user->email,
+            "username" => $user->username,
+            "school" => $user->school,
+            "type" => $user->type,
+            "state" => $user->state,
+            "modified" => $user->modified
+        )
     );
- 
+
     // set response code
     http_response_code(200);
- 
+
     // generate jwt
     $jwt = JWT::encode($token, $key);
     echo json_encode(
@@ -106,10 +102,9 @@ if(password_verify($data->password, $user->password)){
                 "jwt" => $jwt
             )
         );
-    
     die();
 }
- 
+
 // set response code
 http_response_code(401);
 echo json_encode(array("error" => TRUE, "message" => "Login failed."));

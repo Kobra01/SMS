@@ -33,57 +33,58 @@ function onSubmit(e) {
     const data = {
         email: email.value
     };
-        
+
     fetch(url, {
         method: 'POST',
-        mode: "cors",
+        mode: 'cors',
         body: JSON.stringify(data), // data can be `string` or {object}!
-        headers:{
+        headers: {
             'Content-Type': 'application/json'
         }
-    }).then(res => res.json())
-    .then(response =>  {
-        console.log('Success:', JSON.stringify(response));
+    })
+        .then(res => res.json())
+        .then(response => {
+            console.log('Success:', JSON.stringify(response));
 
-        if (response.error) {
+            if (response.error) {
+                const msg = document.createElement('DIV');
+                msg.classList.add('card');
+                msg.classList.add('error');
+                msg.innerHTML = response.message;
+                content.insertBefore(msg, form.parentElement.nextSibling);
+
+                sessionStorage.clear();
+                localStorage.clear();
+
+                setTimeout(() => {
+                    content.removeChild(msg);
+                }, 10000);
+            } else {
+                const msg = document.createElement('DIV');
+                msg.classList.add('card');
+                msg.classList.add('success');
+                msg.innerHTML = response.message;
+                content.insertBefore(msg, form.parentElement.nextSibling);
+
+                setTimeout(() => {
+                    content.removeChild(msg);
+                }, 10000);
+            }
+            content.removeChild(load);
+        })
+        .catch(error => {
+            console.error('Error:', error);
             const msg = document.createElement('DIV');
             msg.classList.add('card');
             msg.classList.add('error');
-            msg.innerHTML = response.message;
-            content.insertBefore(msg, form.parentElement.nextSibling);
-
-            sessionStorage.clear();
-            localStorage.clear(); 
-
-            setTimeout(() => {
-                content.removeChild(msg);
-            }, 10000);
-        } else {
-            const msg = document.createElement('DIV');
-            msg.classList.add('card');
-            msg.classList.add('success');
-            msg.innerHTML = response.message;
+            msg.innerHTML = 'Fehler';
             content.insertBefore(msg, form.parentElement.nextSibling);
 
             setTimeout(() => {
                 content.removeChild(msg);
-            }, 10000);
-        }
-        content.removeChild(load);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        const msg = document.createElement('DIV');
-        msg.classList.add('card');
-        msg.classList.add('error');
-        msg.innerHTML = 'Fehler';
-        content.insertBefore(msg, form.parentElement.nextSibling);
-
-        setTimeout(() => {
-            content.removeChild(msg);
-        }, 7000);
-        content.removeChild(load);
-    });
+            }, 7000);
+            content.removeChild(load);
+        });
 
     email.value = '';
 }

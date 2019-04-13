@@ -10,7 +10,7 @@ class Mailer {
     // object properties
     public $email;
     public $code;
- 
+
     // constructor
     public function __construct($phpmail){
         $this->mailer = $phpmail;

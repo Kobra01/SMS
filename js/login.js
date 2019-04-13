@@ -11,23 +11,24 @@ if (localStorage.getItem('jwt')) {
 if (jwt) {
     fetch(urlCheck, {
         method: 'GET',
-        mode: "cors",
-        headers:{
+        mode: 'cors',
+        headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + jwt
-        }
-    }).then(res => res.json())
-    .then(response =>  {
-        console.log('Success:', JSON.stringify(response));
-
-        if (response.error) {
-            sessionStorage.clear();
-            localStorage.clear();
-        } else {
-            window.location.href = 'feed.html';
+            Authorization: 'Bearer ' + jwt
         }
     })
-    .catch(error => console.error('Error:', error));
+        .then(res => res.json())
+        .then(response => {
+            console.log('Success:', JSON.stringify(response));
+
+            if (response.error) {
+                sessionStorage.clear();
+                localStorage.clear();
+            } else {
+                window.location.href = 'feed.html';
+            }
+        })
+        .catch(error => console.error('Error:', error));
 }
 
 const content = document.querySelector('#main');
@@ -51,8 +52,11 @@ function onSubmit(e) {
     content.insertBefore(load, form.parentElement.nextSibling);
 
     if (email.value === '') {
-
-        if (username.value === '' || school.value === '' || password.value === '') {
+        if (
+            username.value === '' ||
+            school.value === '' ||
+            password.value === ''
+        ) {
             console.log('fields are missing');
             const msg = document.createElement('DIV');
             msg.classList.add('card');
@@ -72,57 +76,56 @@ function onSubmit(e) {
             school: school.value,
             password: password.value
         };
-          
+
         fetch(urlLogin, {
             method: 'POST', // or 'PUT'
-            mode: "cors",
+            mode: 'cors',
             body: JSON.stringify(data), // data can be `string` or {object}!
-            headers:{
+            headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(res => res.json())
-        .then(response =>  {
-            console.log('Success:', JSON.stringify(response));
+        })
+            .then(res => res.json())
+            .then(response => {
+                console.log('Success:', JSON.stringify(response));
 
-            if (response.error) {
+                if (response.error) {
+                    const msg = document.createElement('DIV');
+                    msg.classList.add('card');
+                    msg.classList.add('error');
+                    msg.innerHTML = response.message;
+                    content.insertBefore(msg, form.parentElement.nextSibling);
+
+                    sessionStorage.clear();
+                    localStorage.clear();
+
+                    setTimeout(() => {
+                        content.removeChild(msg);
+                    }, 10000);
+                } else {
+                    if (stayloggedin.checked === true) {
+                        localStorage.setItem('jwt', response.jwt);
+                    } else {
+                        sessionStorage.setItem('jwt', response.jwt);
+                    }
+                    window.location.href = 'feed.html';
+                }
+                content.removeChild(load);
+            })
+            .catch(error => {
+                console.error('Error:', error);
                 const msg = document.createElement('DIV');
                 msg.classList.add('card');
                 msg.classList.add('error');
-                msg.innerHTML = response.message;
+                msg.innerHTML = 'Fehler';
                 content.insertBefore(msg, form.parentElement.nextSibling);
-
-                sessionStorage.clear();
-                localStorage.clear();                
 
                 setTimeout(() => {
                     content.removeChild(msg);
-                }, 10000);
-            } else {
-                if (stayloggedin.checked === true) {
-                    localStorage.setItem('jwt', response.jwt);
-                } else {
-                    sessionStorage.setItem('jwt', response.jwt);
-                }
-                window.location.href = 'feed.html';
-            }
-            content.removeChild(load);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            const msg = document.createElement('DIV');
-            msg.classList.add('card');
-            msg.classList.add('error');
-            msg.innerHTML = 'Fehler';
-            content.insertBefore(msg, form.parentElement.nextSibling);
-
-            setTimeout(() => {
-                content.removeChild(msg);
-            }, 7000);
-            content.removeChild(load);
-        });
-        
+                }, 7000);
+                content.removeChild(load);
+            });
     } else {
-
         if (email.value === '' || password.value === '') {
             console.log('fields are missing');
             const msg = document.createElement('DIV');
@@ -137,7 +140,7 @@ function onSubmit(e) {
             content.removeChild(load);
             return;
         }
-    
+
         //Validate Email
         if (email.value.indexOf('@') == -1) {
             console.log('email not correct');
@@ -158,59 +161,58 @@ function onSubmit(e) {
             email: email.value,
             password: password.value
         };
-          
+
         fetch(urlLogin, {
             method: 'POST', // or 'PUT'
-            mode: "cors",
+            mode: 'cors',
             body: JSON.stringify(data), // data can be `string` or {object}!
-            headers:{
+            headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(res => res.json())
-        .then(response =>  {
-            console.log('Success:', JSON.stringify(response));
+        })
+            .then(res => res.json())
+            .then(response => {
+                console.log('Success:', JSON.stringify(response));
 
-            if (response.error) {
+                if (response.error) {
+                    const msg = document.createElement('DIV');
+                    msg.classList.add('card');
+                    msg.classList.add('error');
+                    msg.innerHTML = response.message;
+                    content.insertBefore(msg, form.parentElement.nextSibling);
+
+                    sessionStorage.clear();
+                    localStorage.clear();
+
+                    setTimeout(() => {
+                        content.removeChild(msg);
+                    }, 10000);
+                } else {
+                    if (stayloggedin.checked === true) {
+                        localStorage.setItem('jwt', response.jwt);
+                    } else {
+                        sessionStorage.setItem('jwt', response.jwt);
+                    }
+                    window.location.href = 'feed.html';
+                }
+                content.removeChild(load);
+            })
+            .catch(error => {
+                console.error('Error:', error);
                 const msg = document.createElement('DIV');
                 msg.classList.add('card');
                 msg.classList.add('error');
-                msg.innerHTML = response.message;
+                msg.innerHTML = 'Fehler';
                 content.insertBefore(msg, form.parentElement.nextSibling);
-
-                sessionStorage.clear();
-                localStorage.clear(); 
 
                 setTimeout(() => {
                     content.removeChild(msg);
-                }, 10000);
-            } else {
-                if (stayloggedin.checked === true) {
-                    localStorage.setItem('jwt', response.jwt);
-                } else {
-                    sessionStorage.setItem('jwt', response.jwt);
-                }
-                window.location.href = 'feed.html';
-            }
-            content.removeChild(load);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            const msg = document.createElement('DIV');
-            msg.classList.add('card');
-            msg.classList.add('error');
-            msg.innerHTML = 'Fehler';
-            content.insertBefore(msg, form.parentElement.nextSibling);
-
-            setTimeout(() => {
-                content.removeChild(msg);
-            }, 7000);
-            content.removeChild(load);
-        });
-
+                }, 7000);
+                content.removeChild(load);
+            });
     }
 
     username.value = '';
     email.value = '';
     password.value = '';
-
 }

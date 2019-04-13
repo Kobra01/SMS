@@ -1,96 +1,119 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Login - MKS SchulManager</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="https://mks-software.de/skylite-framework-beta/css/style.css" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">  
-</head>
-<body>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Login - MKS SchulManager</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            media="screen"
+            href="https://mks-software.de/skylite-framework-beta/css/style.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+            integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+            crossorigin="anonymous"
+        />
+    </head>
+    <body>
+        <!-- Header -->
+        <header>
+            <a href="login.html" class="btn right">Login</a>
+            <i class="fas fa-bars" onclick="openNav()"></i>
+        </header>
 
-    <!-- Header -->
-    <header>
-        <a href="login.html" class="btn right">Login</a>
-        <i class="fas fa-bars" onclick="openNav()"></i>
-    </header>
+        <!-- Content Area -->
+        <div id="main">
+            <div class="card topic">
+                <h1>Login</h1>
+                <h3>Melden sie sich hier an</h3>
+            </div>
 
-    <!-- Content Area -->
-    <div id="main">
+            <div class="card">
+                <br />
+                <h2>Anmelden:</h2>
+                <br />
+                <form id="form">
+                    <label for="school">Schule:</label>
+                    <select name="school" id="school">
+                        <option value="EGN66" selected
+                            >Einstein-Gymnasium Neuenhagen</option
+                        >
+                    </select>
+                    <label for="username">Benutzername:</label>
+                    <input type="text" name="username" id="username" />
+                    <br />ODER<br /><br />
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" id="email" />
+                    <br />
+                    <label for="password">Passwort:</label>
+                    <input type="password" name="password" id="password" />
 
-        <div class="card topic">
-            <h1>Login</h1>
-            <h3>Melden sie sich hier an</h3>
+                    <input
+                        type="checkbox"
+                        name="stay"
+                        value="true"
+                        id="stay"
+                        disabled
+                    />
+                    <p>eingeloggt bleiben?</p>
+                    <br />
+                    <input type="submit" value="Login" />
+                </form>
+            </div>
+
+            <a href="forgotpassword.html" class="card">
+                <br />
+                <h4 class="center-align" style="color: black;">
+                    [Passwort vergessen?]
+                </h4>
+                <br />
+            </a>
+
+            <div class="card">
+                <br />
+                <h3>Noch nicht Registriert?</h3>
+                <br />
+                <p>
+                    Dann klick <a href="registration.html">hier</a><br />
+                    und melde dich kostenlos an.
+                </p>
+                <br />
+            </div>
         </div>
 
-        <div class="card">
-            <br>
-            <h2>Anmelden:</h2>
-            <br>
-            <form id="form">
-                <label for="school">Schule:</label>
-                <select name="school" id="school">
-                    <option value="EGN66" selected>Einstein-Gymnasium Neuenhagen</option>
-                </select>
-                <label for="username">Benutzername:</label>
-                <input type="text" name="username" id="username">
-                <br>ODER<br><br>
-                <label for="email">Email:</label>
-                <input type="email" name="email" id="email">
-                <br>
-                <label for="password">Passwort:</label>
-                <input type="password" name="password" id="password">
+        <!-- Footer -->
+        <footer>
+            <a href="#">Impressum</a>
+            <a href="#">Datenschutzerklärung</a>
+            <a href="#">Kontakt</a>
+        </footer>
 
-                <input type="checkbox" name="stay" value="true" id="stay" disabled><p>eingeloggt bleiben?</p><br>
-                <input type="submit" value="Login">
-            </form>
+        <!-- Sidenav -->
+        <div id="overlay" onclick="closeNav()"></div>
+        <div id="sidenav">
+            <i class="fas fa-times" id="closebtn" onclick="closeNav()"></i>
+            <a href="index.html">Start</a>
+            <a href="#">Spacer</a>
+            <a href="#">Spacer</a>
+            <a href="help.html">Hilfe</a>
         </div>
 
-        <a href="forgotpassword.html" class="card">
-            <br>
-            <h4 class="center-align" style="color: black;">[Passwort vergessen?]</h4>
-            <br>
-        </a>
-
-        <div class="card">
-            <br>
-            <h3>Noch nicht Registriert?</h3>
-            <br>
-            <p>Dann klick <a href="registration.html">hier</a><br>
-            und melde dich kostenlos an.</p>
-            <br>
-            
+        <!-- Back 2 Top Button -->
+        <div class="fixed-action-btn">
+            <a href="#top" class="btn-floating"
+                ><i
+                    class="fas fa-angle-up"
+                    style=" margin-left: 22%; margin-top: 3%"
+                ></i
+            ></a>
         </div>
-
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <a href="#">Impressum</a>
-        <a href="#">Datenschutzerklärung</a>
-        <a href="#">Kontakt</a>
-    </footer> 
-
-    <!-- Sidenav -->
-    <div id="overlay" onclick="closeNav()"></div>
-    <div id="sidenav">
-        <i class="fas fa-times" id="closebtn" onclick="closeNav()"></i>
-        <a href="index.html">Start</a>
-        <a href="#">Spacer</a>
-        <a href="#">Spacer</a>
-        <a href="help.html">Hilfe</a>
-    </div>
-
-    <!-- Back 2 Top Button -->
-	<div class="fixed-action-btn">
-        <a href="#top" class="btn-floating"><i class="fas fa-angle-up" style=" margin-left: 22%; margin-top: 3%"></i></a>
-    </div>
-    
-</body>
+    </body>
 
     <!-- Scripts -->
     <script src="https://mks-software.de/skylite-framework-beta/js/main.js"></script>
     <script src="js/login.js"></script>
-
 </html>

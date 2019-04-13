@@ -19,7 +19,7 @@ use PHPMailer\PHPMailer\Exception;
 require 'libs/phpmailer/src/Exception.php';
 require 'libs/phpmailer/src/PHPMailer.php';
 require 'libs/phpmailer/src/SMTP.php';
- 
+
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
@@ -27,12 +27,12 @@ $db = $database->getConnection();
 // instantiate mail object
 $phpmailer = new PHPMailer(true);                              // Passing `true` enables exceptions
 include_once 'config/Mailer.php';
- 
+
 // instantiate other objects
 $user = new User($db);
 $mailer = new Mailer($phpmailer);
 $code = new Code($db);
- 
+
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
 
@@ -73,11 +73,10 @@ if ($user->userExist()) {
 
 // create the user
 if(!$user->create()){
- 
+
     // // message if unable to create user
     http_response_code(400);
     echo json_encode(array("error" => TRUE, "message" => "Unable to create user."));
-    
     die();
 }
 
@@ -86,11 +85,10 @@ $code->user_id = $user->id;
 $code->type = '1';
 
 if (!$code->createCode()) {
-      
+
     // message if unable to create code
     http_response_code(400);
     echo json_encode(array("error" => TRUE, "message" => "Unable to create verify code."));
-
     die();
 }
 
@@ -103,7 +101,6 @@ if (!$mailer->sendVerifyMail()) {
     // message if unable to send email
     http_response_code(400);
     echo json_encode(array("error" => TRUE, "message" => "Unable to send email."));
-
     die();
 }
 

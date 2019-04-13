@@ -12,7 +12,7 @@ class Code {
     public $code;
     public $user_id;
     public $type;
- 
+
     // constructor
     public function __construct($db){
         $this->conn = $db;
@@ -72,7 +72,7 @@ class Code {
         $stmt = $this->conn->prepare($query);
 
         $createTime = strtotime('-24 hours');
-    	$timestamp = date('Y-m-d H:i:s', $createTime);
+        $timestamp = date('Y-m-d H:i:s', $createTime);
 
 
         $this->code=htmlspecialchars(strip_tags($this->code));
@@ -94,7 +94,7 @@ class Code {
 
         // get record details / values
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
- 
+
         // assign values to object properties
         $this->id = $row['id'];
         $this->user_id = $row['user'];
@@ -140,7 +140,7 @@ class Code {
         $stmt = $this->conn->prepare($query);
 
         $deleteTime = strtotime('-168 hours');
-    	$deltimestamp = date('Y-m-d H:i:s', $deleteTime);
+        $deltimestamp = date('Y-m-d H:i:s', $deleteTime);
 
         $deltimestamp=htmlspecialchars(strip_tags($deltimestamp));
 

@@ -5,16 +5,16 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
- 
+
 // files needed to connect to database
 include_once 'config/Database.php';
 include_once 'objects/User.php';
 include_once 'objects/Code.php';
- 
+
 // get database connection
 $database = new Database();
 $db = $database->getConnection();
- 
+
 // instantiate objects
 $user = new User($db);
 $code = new Code($db);

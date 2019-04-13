@@ -1,60 +1,75 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Feed - MKS SchulManager</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="https://mks-software.de/skylite-framework-beta/css/style.css" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
-</head>
-<body>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Feed - MKS SchulManager</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            media="screen"
+            href="https://mks-software.de/skylite-framework-beta/css/style.css"
+        />
+        <link
+            rel="stylesheet"
+            href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+            integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+            crossorigin="anonymous"
+        />
+    </head>
+    <body>
+        <!-- Header -->
+        <header>
+            <a href="news.html" class="btn right"
+                >Neu
+                <div style="display: inline" id="new">0</div></a
+            >
+            <i class="fas fa-bars" onclick="openNav()"></i>
+        </header>
 
-    <!-- Header -->
-    <header>
-        <a href="news.html" class="btn right">Neu <div style="display: inline" id="new">0</div></a>
-        <i class="fas fa-bars" onclick="openNav()"></i>
-    </header>
+        <!-- Content Area -->
+        <div id="main">
+            <div class="card topic">
+                <h1>Feed</h1>
+                <h3>
+                    Deine persönliche Zusammenstellung aller wichtigen
+                    Ereignisse
+                </h3>
+            </div>
 
-    <!-- Content Area -->
-    <div id="main">
-
-        <div class="card topic">
-            <h1>Feed</h1>
-            <h3>Deine persönliche Zusammenstellung aller wichtigen Ereignisse</h3>
+            <div class="card fullspinner"></div>
         </div>
 
-        <div class="card fullspinner">
+        <!-- Footer -->
+        <footer>
+            <a href="#">Impressum</a>
+            <a href="#">Datenschutzerklärung</a>
+            <a href="#">Kontakt</a>
+        </footer>
+
+        <!-- Sidenav -->
+        <div id="overlay" onclick="closeNav()"></div>
+        <div id="sidenav">
+            <i class="fas fa-times" id="closebtn" onclick="closeNav()"></i>
+            <a href="profile.html">Profil</a>
+            <a href="feed.html">Feed</a>
+            <a href="infos.html">Infos</a>
+            <a href="help.html">Hilfe</a>
+            <a href="logout.html" class="btn">Logout</a>
         </div>
 
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <a href="#">Impressum</a>
-        <a href="#">Datenschutzerklärung</a>
-        <a href="#">Kontakt</a>
-    </footer> 
-
-    <!-- Sidenav -->
-    <div id="overlay" onclick="closeNav()"></div>
-    <div id="sidenav">
-        <i class="fas fa-times" id="closebtn" onclick="closeNav()"></i>
-        <a href="profile.html">Profil</a>
-        <a href="feed.html">Feed</a>
-        <a href="infos.html">Infos</a>
-        <a href="help.html">Hilfe</a>
-        <a href="logout.html" class="btn">Logout</a>
-    </div>
-
-    <!-- Back 2 Top Button -->
-	<div class="fixed-action-btn">
-        <a href="#top" class="btn-floating"><i class="fas fa-angle-up" style=" margin-left: 22%; margin-top: 3%"></i></a>
-    </div>
-    
-</body>
+        <!-- Back 2 Top Button -->
+        <div class="fixed-action-btn">
+            <a href="#top" class="btn-floating"
+                ><i
+                    class="fas fa-angle-up"
+                    style=" margin-left: 22%; margin-top: 3%"
+                ></i
+            ></a>
+        </div>
+    </body>
 
     <!-- Scripts -->
     <script src="https://mks-software.de/skylite-framework-beta/js/main.js"></script>
-
 </html>
