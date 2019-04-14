@@ -5,7 +5,7 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
- 
+
 // files needed to connect to database
 include_once 'config/Database.php';
 include_once 'objects/User.php';
@@ -65,7 +65,7 @@ $user->password = $data->password;
 if ($user->userExist()) {
 
     // message if user exist
-    http_response_code(400);
+    http_response_code(403);
     echo json_encode(array("error" => TRUE, "message" => "User already exist."));
 
     die();
@@ -74,7 +74,7 @@ if ($user->userExist()) {
 // create the user
 if(!$user->create()){
 
-    // // message if unable to create user
+    // message if unable to create user
     http_response_code(400);
     echo json_encode(array("error" => TRUE, "message" => "Unable to create user."));
     die();
