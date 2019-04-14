@@ -36,7 +36,7 @@ if (strcasecmp($type, "Bearer") == 0) {
     // if decode succeed, show user details
     try {
         // decode jwt
-        $decoded = JWT::decode($data, $key, array('HS256')); 
+        $jwt_decoded = JWT::decode($data, $key, array('HS256')); 
     } 
     // if decode fails, it means jwt is invalid
     catch (Exception $e){
