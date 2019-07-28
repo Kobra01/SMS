@@ -59,12 +59,12 @@ class Student{
     public function studentExist(){
         
         // Create Query
-        $query = '  SELECT
-                        id
-                    FROM
-                        ' . $this->table_name . '
-                    WHERE
-                        uid = :uid';
+        $query = 'SELECT
+                    id
+                FROM
+                    ' . $this->table_name . '
+                WHERE
+                    uid = :uid';
 
 
         // prepare the query
