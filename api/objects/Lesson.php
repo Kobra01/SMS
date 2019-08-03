@@ -115,4 +115,30 @@ class Lesson{
         return true;
     }
 
+    // CRUD -> Delete
+
+    // delete lesson
+    public function delete(){
+
+        // Create Query
+        $query = '  DELETE FROM
+                        ' . $this->table_lessons . '
+                    WHERE
+                        id = :id';
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':id', $this->id);
+
+        // exit if failed
+        if(!$stmt->execute()){
+            return false;
+        }
+
+        return true;
+    }
+
 }
