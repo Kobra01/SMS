@@ -11,6 +11,7 @@ class Course{
     public $id;
     public $name;
     public $student;
+    public $courses;
 
     // constructor
     public function __construct($db){
@@ -82,7 +83,7 @@ class Course{
 
         // Create Query
         $query = '  SELECT
-                        name
+                        id, name
                     FROM
                         ' . $this->table_member . ', ' . $this->table_name . '
                     WHERE
@@ -94,7 +95,7 @@ class Course{
         $stmt = $this->conn->prepare($query);
 
         // sanitize
-        $this->student=htmlspecialchars(strip_tags($this->emastudentil));
+        $this->student=htmlspecialchars(strip_tags($this->student));
 
         // bind the values
         $stmt->bindParam(':student', $this->student);
@@ -105,21 +106,62 @@ class Course{
         }
 
         // get record details / values
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        // assign values to object properties
-        /*$this->id = $row['id'];
-        $this->firstname = $row['firstname'];
-        $this->lastname = $row['lastname'];
-        $this->password = $row['pwhash'];
-        $this->type = $row['type'];
-        $this->username = $row['username'];
-        $this->school = $row['school'];
-        $this->state = $row['state'];
-        $this->modified = $row['modified'];*/
+        $this->courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         return true;
     }
+
+    // CRUD -> Delete
+
+    // remove student from course
+    public function removeStudent(){
+
+        // Create Query
+        $query = '  DELETE FROM
+                        ' . $this->table_member . '
+                    WHERE
+                        student = :student';
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        $this->student = htmlspecialchars(strip_tags($this->student));
+
+        $stmt->bindParam(':student', $this->student);
+
+        // exit if failed
+        if(!$stmt->execute()){
+            return false;
+        }
+
+        return true;
+    }
+
+    // delete course
+    public function delete(){
+
+        // Create Query
+        $query = '  DELETE FROM
+                        ' . $this->table_name . '
+                    WHERE
+                        id = :id';
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        $this->id = htmlspecialchars(strip_tags($this->id));
+
+        $stmt->bindParam(':id', $this->id);
+
+        // exit if failed
+        if(!$stmt->execute()){
+            return false;
+        }
+
+        return true;
+
+    }
+
 }
 
 ?>
