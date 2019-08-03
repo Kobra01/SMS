@@ -91,7 +91,9 @@ class Lesson{
                     AND
                         ( c.course = l.course OR s.class = l.class )
                     AND
-                        ( l.subject = f.id AND l.time = t.id )';
+                        ( l.subject = f.id AND l.time = t.id )
+                    ORDER BY
+						l.day ASC, t.number ASC';
 
         // prepare the query
         $stmt = $this->conn->prepare($query);
