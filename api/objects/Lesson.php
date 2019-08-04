@@ -8,6 +8,7 @@ class Lesson{
     private $table_time = "lesson_time";
     private $table_subjects = "subjects";
     private $table_students = "students";
+    private $table_teachers = "teachers";
     private $table_course_member = "course_member";
     //private $table_member = "course_member";
 
@@ -82,17 +83,18 @@ class Lesson{
 
         // Create Query
         $query = '  SELECT
-                        l.id, l.day, t.number, f.name, f.short, l.teacher, l.room
+                        l.id, l.day, z.number, f.name, f.short, t.pub_name, t.short, l.room
                     FROM
-                        ' . $this->table_lessons.' l, ' . $this->table_time.' t, ' . $this->table_subjects.' f, ' . $this->table_students.' s, ' . $this->table_course_member.' c
+                        ' . $this->table_lessons.' l, ' . $this->table_time.' z, ' . $this->table_subjects.' f, 
+                        ' . $this->table_teachers.' t, ' . $this->table_students.' s, ' . $this->table_course_member.' c
                     WHERE
                         ( c.student = :student OR s.id = :student )
                     AND
                         ( c.course = l.course OR s.class = l.class )
                     AND
-                        ( l.subject = f.id AND l.time = t.id )
+                        ( l.subject = f.id AND l.time = z.id AND l.teacher = t.id)
                     ORDER BY
-						l.day ASC, t.number ASC';
+						l.day ASC, z.number ASC';
 
         // prepare the query
         $stmt = $this->conn->prepare($query);
