@@ -16,7 +16,6 @@ class Student{
     // constructor
     public function __construct($db){
         $this->conn = $db;
-        $this->class = null;
     }
 
     // CRUD -> Create
