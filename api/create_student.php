@@ -43,7 +43,7 @@ if (!isset($data->year)) {
 }
 
 // set product property values
-$student->uid = $jwt_decoded->data->id;
+$student->user_id = $jwt_decoded->data->id;
 $student->year = $data->year;
 $student->pub_name = $jwt_decoded->data->firstname + ' ' + $jwt_decoded->data->lastname[0] + '.';
 
@@ -68,6 +68,5 @@ if(!$student->create()){
 // set response code & answer
 http_response_code(201);
 echo json_encode(array("error" => FALSE, "message" => "Student was created."));
-
 
 ?>
