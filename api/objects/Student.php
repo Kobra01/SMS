@@ -81,6 +81,12 @@ class Student{
         }
         
         if ($stmt->rowCount() > 0) {
+
+            // get record details / values
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            // assign values to object properties
+            $this->id = $row['id'];
+
             return true;
         }
 
