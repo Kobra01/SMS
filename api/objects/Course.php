@@ -10,6 +10,7 @@ class Course{
     // object properties
     public $id;
     public $name;
+    public $year;
     public $student;
     public $courses;
 
@@ -26,16 +27,19 @@ class Course{
         // insert query
         $query = "INSERT INTO " . $this->table_name . "
                 SET
-                    name = :name";
+                    name = :name,
+                    year = :year";
 
         // prepare the query
         $stmt = $this->conn->prepare($query);
 
         // sanitize
         $this->name=htmlspecialchars(strip_tags($this->name));
+        $this->year=htmlspecialchars(strip_tags($this->year));
 
         // bind the values
         $stmt->bindParam(':name', $this->name);
+        $stmt->bindParam(':year', $this->year);
 
         // execute the query, also check if query was successful
         if($stmt->execute()){
