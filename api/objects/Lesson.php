@@ -10,7 +10,6 @@ class Lesson{
     private $table_students = "students";
     private $table_teachers = "teachers";
     private $table_course_member = "course_member";
-    //private $table_member = "course_member";
 
     // object properties
     public $id;
@@ -88,11 +87,11 @@ class Lesson{
                         ' . $this->table_lessons.' l, ' . $this->table_time.' z, ' . $this->table_subjects.' f, 
                         ' . $this->table_teachers.' t, ' . $this->table_students.' s, ' . $this->table_course_member.' c
                     WHERE
-                        ( c.student = :student OR s.id = :student )
-                    AND
-                        ( c.course = l.course OR s.class = l.class )
+                        ( (c.student = :student AND c.course = l.course AND c.student = s.id) OR (s.id = :student AND s.class = l.class) )
                     AND
                         ( l.subject = f.id AND l.time = z.id AND l.teacher = t.id)
+					GROUP BY
+						l.id
                     ORDER BY
 						l.day ASC, z.number ASC';
 
