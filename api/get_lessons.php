@@ -64,6 +64,7 @@ if ($jwt_decoded->data->type == 'STNT') {
         "error" => FALSE,
         "message" => "Found lessons.",
         "lessons" => $lesson->lessons));
+    die();
 }
 
  // message that this is not a valid type
