@@ -82,7 +82,7 @@ class Lesson{
 
         // Create Query
         $query = '  SELECT
-                        l.id, l.day, z.number, f.name, f.short, t.pub_name, t.short, l.room
+                        l.id, l.day, z.number, f.name as subject, f.short as subject_short, t.pub_name as teacher, t.short as teacher_short, l.room
                     FROM
                         ' . $this->table_lessons.' l, ' . $this->table_time.' z, ' . $this->table_subjects.' f, 
                         ' . $this->table_teachers.' t, ' . $this->table_students.' s, ' . $this->table_course_member.' c
