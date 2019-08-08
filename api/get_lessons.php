@@ -14,6 +14,7 @@ include_once 'mksec/validate.php';
 include_once 'config/Database.php';
 include_once 'objects/Student.php';
 include_once 'objects/Lesson.php';
+include_once 'objects/Settings.php';
 
 // get database connection
 $database = new Database();
@@ -22,6 +23,7 @@ $db = $database->getConnection();
 // instantiate other objects
 $student = new Student($db);
 $lesson = new Lesson($db);
+$settings = new Settings($db);
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
@@ -58,12 +60,17 @@ if ($jwt_decoded->data->type == 'STNT') {
         die();
     }
 
+    // Load color settings for subjects
+    $settings->uid = $jwt_decoded->data->id;
+    $settings->getSettings();
+
     // set response code & answer
     http_response_code(200);
     echo json_encode(array(
         "error" => FALSE,
         "message" => "Found lessons.",
-        "lessons" => $lesson->lessons));
+        "lessons" => $lesson->lessons,
+        "subject_settings" => $settings->subject_settings));
     die();
 }
 
