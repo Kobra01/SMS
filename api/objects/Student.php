@@ -56,7 +56,7 @@ class Student{
 
     //check if user already exist
     public function studentExist(){
-        
+
         // Create Query
         $query = 'SELECT
                     id
@@ -64,7 +64,6 @@ class Student{
                     ' . $this->table_name . '
                 WHERE
                     uid = :uid';
-
 
         // prepare the query
         $stmt = $this->conn->prepare($query);
@@ -86,6 +85,47 @@ class Student{
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             // assign values to object properties
             $this->id = $row['id'];
+
+            return true;
+        }
+
+        return false;
+    }
+
+    //get User data
+    public function getStudentData(){
+
+        // Create Query
+        $query = 'SELECT
+                    id, year, class, pub_name
+                FROM
+                    ' . $this->table_name . '
+                WHERE
+                    uid = :uid';
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->user_id=htmlspecialchars(strip_tags($this->user_id));
+
+        // bind the values
+        $stmt->bindParam(':uid', $this->user_id);
+
+        // exit if failed
+        if(!$stmt->execute()){
+            return false;
+        }
+        
+        if ($stmt->rowCount() > 0) {
+
+            // get record details / values
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            // assign values to object properties
+            $this->id = $row['id'];
+            $this->year = $row['year'];
+            $this->class = $row['class'];
+            $this->pub_name = $row['pub_name'];
 
             return true;
         }
