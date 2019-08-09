@@ -51,6 +51,47 @@ changePassword.innerHTML =
     '<br><h4>Passwort ändern? Dann klick <a href="forgotpassword.html" style="color: blue; text-decoration: underline;">hier</a></h4><br>';
 content.insertBefore(changePassword, spinner);
 
+if (jwtdata.type == 'STNT') {
+    let studentDataUrl = 'api/get_student_data.php';
+    fetch(studentDataUrl, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + jwt
+        }
+    })
+        .then(res => res.json())
+        .then(response => {
+            console.log('Success:', JSON.stringify(response));
+            if (!response.error) {
+                const studentdata = document.createElement('DIV');
+                studentdata.classList.add('card');
+
+                studentdata.innerHTML =
+                    '<br>' +
+                    '<h2>Schüler Daten:</h2>' +
+                    '<br>' +
+                    '<b>Name:</b> ' +
+                    response.pub_name +
+                    '<br>' +
+                    '<br>' +
+                    '<b>Jahrgang:</b> ' +
+                    response.year +
+                    '<br>' +
+                    '<br>' +
+                    '<b>Klasse:</b> ' +
+                    response.class +
+                    '<br>' +
+                    '<br>';
+                content.insertBefore(studentdata, spinner);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+content.removeChild(spinner);
+
 function decodeToken(token) {
     var payload = JSON.parse(atob(token.split('.')[1]));
     return payload;
