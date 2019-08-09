@@ -60,7 +60,6 @@ fetch(urlGetLessons, {
                     lesson.teacher,
                     lesson.room
                 );
-                console.log(lesson.id);
             }
             content.removeChild(spinner);
         }
