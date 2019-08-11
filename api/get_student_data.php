@@ -45,11 +45,21 @@ if(!$student->getStudentData()){
     die();
 }
 
+if ($student->id == 0) {
+    // set response code & answer
+    http_response_code(204);
+    echo json_encode(array(
+        "error" => TRUE,
+        "error_code" => 1,
+        "message" => "Student not exist."));
+}
+
 // set response code & answer
 http_response_code(201);
 echo json_encode(array(
     "error" => FALSE,
-    "message" => "Student was created.",
+    "error_code" => 0,
+    "message" => "Student data was found.",
     "pub_name" => $student->pub_name,
     "year" => $student->year,
     "class" => $student->class));

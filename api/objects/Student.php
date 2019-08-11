@@ -130,7 +130,11 @@ class Student{
             return true;
         }
 
-        return false;
+        $this->id = 0;
+        $this->year = 0;
+        $this->class = "null";
+        $this->pub_name = "null";
+        return true;
     }
 
 }
