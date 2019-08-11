@@ -47,11 +47,12 @@ if(!$student->getStudentData()){
 
 if ($student->id == 0) {
     // set response code & answer
-    http_response_code(204);
+    http_response_code(201);
     echo json_encode(array(
         "error" => TRUE,
         "error_code" => 1,
         "message" => "Student not exist."));
+    die();
 }
 
 // set response code & answer
