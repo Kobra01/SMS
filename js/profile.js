@@ -57,6 +57,8 @@ changePassword.innerHTML =
 content.insertBefore(changePassword, spinner);
 
 // --------- Schüler Daten laden ---------
+let studentexist = true;
+let studentdata;
 
 if (jwtdata.type == 'STNT') {
     let studentDataUrl = 'api/get_student_data.php';
@@ -73,7 +75,7 @@ if (jwtdata.type == 'STNT') {
         .then(response => {
             console.log('Success:', JSON.stringify(response));
 
-            const studentdata = document.createElement('DIV');
+            studentdata = document.createElement('DIV');
             studentdata.classList.add('card');
 
             if (!response.error) {
@@ -89,7 +91,6 @@ if (jwtdata.type == 'STNT') {
                     response.year +
                     '<br>' +
                     '<br>';
-                content.insertBefore(studentdata, spinner);
             } else if (response.error && response.error_code == 1) {
                 studentdata.innerHTML =
                     '<br/>' +
@@ -108,21 +109,22 @@ if (jwtdata.type == 'STNT') {
                     '    <br/>' +
                     '    <input type="submit" value="Speichern" />' +
                     '</form>';
-                content.insertBefore(studentdata, spinner);
-                const createstudentform = document.querySelector(
-                    '#create_student'
-                );
-                createstudentform.addEventListener('submit', onCreateStudent());
+                studentexist = false;
             } else {
                 studentdata.classList.add('error');
                 studentdata.innerHTML = response.message;
-                content.insertBefore(studentdata, spinner);
             }
+            content.insertBefore(studentdata, spinner);
         })
         .catch(error => console.error('Error:', error));
 }
 
 //content.removeChild(spinner);
+
+if (studentexist == false) {
+    const createstudentform = document.querySelector('#create_student');
+    createstudentform.addEventListener('submit', onCreateStudent());
+}
 
 function onCreateStudent(e) {
     e.preventDefault();
