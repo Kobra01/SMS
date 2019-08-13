@@ -57,12 +57,12 @@ changePassword.innerHTML =
 content.insertBefore(changePassword, spinner);
 
 // --------- Schüler Daten laden ---------
-let studentexist = true;
 let studentdata;
+let createStudenUrl = 'api/create_student.php';
 
 if (jwtdata.type == 'STNT') {
     let studentDataUrl = 'api/get_student_data.php';
-    let createStudenUrl = 'api/create_student.php';
+    let studentexist = true;
     fetch(studentDataUrl, {
         method: 'GET',
         mode: 'cors',
@@ -115,16 +115,16 @@ if (jwtdata.type == 'STNT') {
                 studentdata.innerHTML = response.message;
             }
             content.insertBefore(studentdata, spinner);
+            if (studentexist == false) {
+                document
+                    .querySelector('#create_student')
+                    .addEventListener('submit', onCreateStudent);
+            }
         })
         .catch(error => console.error('Error:', error));
 }
 
 //content.removeChild(spinner);
-
-if (studentexist == false) {
-    const createstudentform = document.querySelector('#create_student');
-    createstudentform.addEventListener('submit', onCreateStudent());
-}
 
 function onCreateStudent(e) {
     e.preventDefault();
