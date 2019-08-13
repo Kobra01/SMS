@@ -45,7 +45,7 @@ if (!isset($data->year)) {
 // set product property values
 $student->user_id = $jwt_decoded->data->id;
 $student->year = $data->year;
-$student->pub_name = $jwt_decoded->data->firstname + ' ' + $jwt_decoded->data->lastname[0] + '.';
+$student->pub_name = $jwt_decoded->data->firstname . ' ' . $jwt_decoded->data->lastname[0] . '.';
 
 // check if user already exist
 if ($student->studentExist()) {
