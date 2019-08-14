@@ -58,11 +58,11 @@ content.insertBefore(changePassword, spinner);
 
 // --------- Schüler Daten laden ---------
 let studentdata;
-let createStudenUrl = 'api/create_student.php';
+let studentclass = 0;
+let studentexist = true;
 
 if (jwtdata.type == 'STNT') {
     let studentDataUrl = 'api/get_student_data.php';
-    let studentexist = true;
     fetch(studentDataUrl, {
         method: 'GET',
         mode: 'cors',
@@ -124,9 +124,27 @@ if (jwtdata.type == 'STNT') {
         .catch(error => console.error('Error:', error));
 }
 
+// --------- Schüler Klasse anzeigen/bearbeiten ---------
+if (jwtdata.type == 'STNT' && studentexist == true) {
+    studentclass = document.createElement('DIV');
+    studentclass.classList.add('card');
+    studentclass.innerHTML =
+        '<br>' +
+        '<h2>Klasse:</h2>' +
+        '<br>' +
+        '<b>Klasse/Tutorium:</b> ' +
+        studentclass +
+        '<br>' +
+        '<input type="submit" value="Bearbeiten" />';
+
+    content.insertBefore(studentclass, spinner);
+}
+
 //content.removeChild(spinner);
 
 function onCreateStudent(e) {
+    let createStudenUrl = 'api/create_student.php';
+
     e.preventDefault();
     console.log('submitted');
 
