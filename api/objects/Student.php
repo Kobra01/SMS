@@ -5,6 +5,7 @@ class Student{
     // database connection and table name
     private $conn;
     private $table_name = "students";
+    private $class_table = "classes";
 
     // object properties
     public $id;
@@ -97,10 +98,12 @@ class Student{
 
         // Create Query
         $query = 'SELECT
-                    id, year, class, pub_name
+                    s.id, c.name, s.class, s.pub_name
                 FROM
-                    ' . $this->table_name . '
+                    ' . $this->table_name.' s, ' . $this->class_table.' c
                 WHERE
+                    s.year = c.id
+                AND
                     uid = :uid';
 
         // prepare the query
@@ -124,7 +127,7 @@ class Student{
             // assign values to object properties
             $this->id = $row['id'];
             $this->year = $row['year'];
-            $this->class = $row['class'];
+            $this->class = $row['name'];
             $this->pub_name = $row['pub_name'];
 
             return true;
