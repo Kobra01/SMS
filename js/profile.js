@@ -58,11 +58,10 @@ content.insertBefore(changePassword, spinner);
 
 // --------- Schüler Daten laden ---------
 let studentdata;
-let studentclass = 0;
-let studentexist = true;
 
 if (jwtdata.type == 'STNT') {
     let studentDataUrl = 'api/get_student_data.php';
+    let studentexist = true;
     fetch(studentDataUrl, {
         method: 'GET',
         mode: 'cors',
@@ -90,7 +89,11 @@ if (jwtdata.type == 'STNT') {
                     '<b>Jahrgang:</b> ' +
                     response.year +
                     '<br>' +
-                    '<br>';
+                    '<br><form id="edit_student_class">' +
+                    '<b>Klasse/Tutorium:</b> ' +
+                    response.class +
+                    '<br>' +
+                    '<input type="submit" value="Bearbeiten" /></form>';
             } else if (response.error && response.error_code == 1) {
                 studentdata.innerHTML =
                     '<br/>' +
@@ -122,22 +125,6 @@ if (jwtdata.type == 'STNT') {
             }
         })
         .catch(error => console.error('Error:', error));
-}
-
-// --------- Schüler Klasse anzeigen/bearbeiten ---------
-if (jwtdata.type == 'STNT' && studentexist == true) {
-    studentclass = document.createElement('DIV');
-    studentclass.classList.add('card');
-    studentclass.innerHTML =
-        '<br>' +
-        '<h2>Klasse:</h2>' +
-        '<br>' +
-        '<b>Klasse/Tutorium:</b> ' +
-        studentclass +
-        '<br>' +
-        '<input type="submit" value="Bearbeiten" />';
-
-    content.insertBefore(studentclass, spinner);
 }
 
 //content.removeChild(spinner);
