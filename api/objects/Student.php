@@ -98,11 +98,11 @@ class Student{
 
         // Create Query
         $query = 'SELECT
-                    s.id, c.name, s.class, s.pub_name
+                    s.id, c.name, c.year, s.pub_name
                 FROM
                     ' . $this->table_name.' s, ' . $this->class_table.' c
                 WHERE
-                    s.year = c.id
+                    s.class = c.id
                 AND
                     uid = :uid';
 
