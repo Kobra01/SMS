@@ -50,7 +50,7 @@ if ($jwt_decoded->data->type == 'STNT') {
     }
 
     // set product property values
-    $clasObjects->year = $student->year;
+    $classObject->year = $student->year;
     if (!$classObject->getClasses()) {
         // message if unable to get classes
         http_response_code(400);
