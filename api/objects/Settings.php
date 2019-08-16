@@ -54,7 +54,7 @@ class Settings{
                     FROM
                         ' . $this->table_name . '
                     WHERE
-                        uid = :uid)';
+                        uid = :uid';
 
 
         // prepare the query
@@ -68,7 +68,7 @@ class Settings{
 
         // exit if failed
         if(!$stmt->execute()){
-            return false;
+            return $this->createSettings();
         }
         
         if ($stmt->rowCount() < 1) {

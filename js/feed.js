@@ -79,7 +79,11 @@ function createCard(subject, number, teacher, room) {
     var sub_right = document.createElement('p');
     card.classList.add('icard');
     icon.classList.add('icon');
-    icon.style.backgroundColor = '#000000';
+    if (sub_settings[subject] != null) {
+        icon.style.backgroundColor = sub_settings[subject];
+    } else {
+        icon.style.backgroundColor = '#000000';
+    }
     text.classList.add('text');
     head.classList.add('head');
     head_right.classList.add('head-right');
