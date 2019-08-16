@@ -13,7 +13,7 @@ include_once 'mksec/validate.php';
 // files needed to connect to database
 include_once 'config/Database.php';
 include_once 'objects/Student.php';
-include_once 'objects/Classes.php';
+include_once 'objects/Class.php';
 
 // get database connection
 $database = new Database();
@@ -21,7 +21,7 @@ $db = $database->getConnection();
 
 // instantiate other objects
 $student = new Student($db);
-$class = new Class($db);
+$classObject = new ClassObject($db);
 
 // get posted data
 $data = json_decode(file_get_contents("php://input"));
@@ -50,8 +50,8 @@ if ($jwt_decoded->data->type == 'STNT') {
     }
 
     // set product property values
-    $class->year = $student->year;
-    if (!$class->getClasses()) {
+    $clasObjects->year = $student->year;
+    if (!$classObject->getClasses()) {
         // message if unable to get classes
         http_response_code(400);
         echo json_encode(array("error" => TRUE, "message" => "Unable to find classes."));
@@ -63,7 +63,7 @@ if ($jwt_decoded->data->type == 'STNT') {
     echo json_encode(array(
         "error" => FALSE,
         "message" => "Found classes.",
-        "classes" => $class->classes));
+        "classes" => $classObject->classes));
     die();
 }
 

@@ -1,6 +1,6 @@
 <?php
 // 'class' object
-class Class{
+class ClassObject{
 
     // database connection and table name
     private $conn;
