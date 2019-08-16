@@ -41,11 +41,12 @@ if ($jwt_decoded->data->type == 'STNT') {
 
     // set product property values
     $student->user_id = $jwt_decoded->data->id;
-    if (!$student->studentExist()) {
-        
-        // message that this is not a student
-        http_response_code(404);
-        echo json_encode(array("error" => TRUE, "message" => "Student not found."));
+    // get the user data
+    if(!$student->getStudentData()){
+
+        // message if unable to create user
+        http_response_code(400);
+        echo json_encode(array("error" => TRUE, "message" => "Unable to get student data."));
         die();
     }
 
