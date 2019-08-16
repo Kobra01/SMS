@@ -13,6 +13,8 @@ class Class{
     public $name;
     public $year;
 
+    public $classes;
+
     public $student;
     public $teacher;
 
@@ -51,7 +53,40 @@ class Class{
 
         return false;
     }
-    
+
+    // CRUD -> Read
+
+    // get all classes for one year
+    public function getClasses(){
+
+        // Create Query
+        $query = '  SELECT
+                        id, name
+                    FROM
+                        ' . $this->table_name . '
+                    WHERE
+                        year = :year';
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->year=htmlspecialchars(strip_tags($this->year));
+
+        // bind the values
+        $stmt->bindParam(':year', $this->year);
+
+        // exit if execute failed
+        if(!$stmt->execute()){
+            return false;
+        }
+
+        // get record details / values
+        $this->classes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return true;
+    }
+
     // CRUD -> Update
 
     // add student to class
