@@ -2,6 +2,7 @@ const spinner = document.querySelector('.fullspinner');
 const content = document.querySelector('#main');
 var jwt;
 const urlGetLessons = 'api/get_lessons.php';
+let sub_settings = JSON.parse('{}');
 
 // check if jwt exist
 if (sessionStorage.getItem('jwt')) {
@@ -27,6 +28,7 @@ fetch(urlGetLessons, {
         console.log('Success:', JSON.stringify(response));
         if (!response.error) {
             var temp_day = '0';
+            sub_settings = JSON.parse(response.subject_settings);
 
             for (let i = 0; i < response.lessons.length; i++) {
                 var lesson = response.lessons[i];

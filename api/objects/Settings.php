@@ -13,7 +13,7 @@ class Settings{
     // constructor
     public function __construct($db){
         $this->conn = $db;
-        $this->subject_settings = '[]';
+        $this->subject_settings = '{}';
     }
 
     // CRUD -> Create
@@ -24,7 +24,7 @@ class Settings{
         $query = "INSERT INTO " . $this->table_name . "
                 SET
                     uid = :uid,
-                    subject = '[]'";
+                    subject = '{}'";
 
         // prepare the query
         $stmt = $this->conn->prepare($query);
