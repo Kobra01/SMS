@@ -118,7 +118,11 @@ if (jwtdata.type == 'STNT') {
                 studentdata.innerHTML = response.message;
             }
             content.insertBefore(studentdata, spinner);
-            if (studentexist == false) {
+            if (studentexist == true && response.error == false) {
+                document
+                    .querySelector('#edit_student_class')
+                    .addEventListener('submit', onEditClass);
+            } else if (studentexist == false) {
                 document
                     .querySelector('#create_student')
                     .addEventListener('submit', onCreateStudent);
@@ -129,6 +133,31 @@ if (jwtdata.type == 'STNT') {
 
 //content.removeChild(spinner);
 
+// get possible classes for student
+function onEditClass(e) {
+    let getClassesUrl = 'api/get_classes.php';
+
+    e.preventDefault();
+    console.log('submitted');
+
+    content.insertBefore(load, studentdata.nextSibling);
+
+    fetch(getClassesUrl, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + jwt
+        }
+    })
+        .then(res => res.json())
+        .then(response => {
+            console.log('Success:', JSON.stringify(response));
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// Create student and set year
 function onCreateStudent(e) {
     let createStudenUrl = 'api/create_student.php';
 
