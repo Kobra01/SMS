@@ -10,6 +10,7 @@ class Student{
     // object properties
     public $id;
     public $user_id;
+    public $class_id;
     public $class;
     public $year;
     public $pub_name;
@@ -93,17 +94,15 @@ class Student{
         return false;
     }
 
-    //get User data
+    //get Student data
     public function getStudentData(){
 
         // Create Query
         $query = 'SELECT
-                    s.id, c.name, s.year, s.pub_name
+                    id, class, year, pub_name
                 FROM
-                    ' . $this->table_name.' s, ' . $this->class_table.' c
+                    ' . $this->table_name.'
                 WHERE
-                    s.class = c.id
-                AND
                     uid = :uid';
 
         // prepare the query
@@ -120,23 +119,59 @@ class Student{
             return false;
         }
         
-        if ($stmt->rowCount() > 0) {
-
-            // get record details / values
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            // assign values to object properties
-            $this->id = $row['id'];
-            $this->year = $row['year'];
-            $this->class = $row['name'];
-            $this->pub_name = $row['pub_name'];
-
-            return true;
+        if ($stmt->rowCount() < 1) {
+            return false;
         }
 
-        $this->id = 0;
-        $this->year = 0;
-        $this->class = "null";
-        $this->pub_name = "null";
+        // get record details / values
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        // assign values to object properties
+        $this->id = $row['id'];
+        $this->year = $row['year'];
+        $this->class_id = $row['class'];
+        $this->pub_name = $row['pub_name'];
+
+        if ($this->class_id != 'null') {
+            $this->getStudentClass();
+        }
+
+        return true;
+    }
+
+    //get Student class name
+    public function getStudentClass(){
+
+        // Create Query
+        $query = 'SELECT
+                    name
+                FROM
+                    ' . $this->class_table.'
+                WHERE
+                    id = :id';
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->class_id=htmlspecialchars(strip_tags($this->class_id));
+
+        // bind the values
+        $stmt->bindParam(':id', $this->class_id);
+
+        // exit if failed
+        if(!$stmt->execute()){
+            return false;
+        }
+        
+        if ($stmt->rowCount() < 1) {
+            return false;
+        }
+
+        // get record details / values
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        // assign values to object properties
+        $this->class = $row['name'];
+
         return true;
     }
 
