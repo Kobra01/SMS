@@ -25,9 +25,6 @@ $student = new Student($db);
 $lesson = new Lesson($db);
 $settings = new Settings($db);
 
-// get posted data
-$data = json_decode(file_get_contents("php://input"));
-
 //check if it is a student
 if ($jwt_decoded->data->type == 'STNT') {
 
