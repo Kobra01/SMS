@@ -153,8 +153,116 @@ function onEditClass(e) {
         .then(res => res.json())
         .then(response => {
             console.log('Success:', JSON.stringify(response));
+            content.removeChild(load);
+            if (response.error) {
+                const msg = document.createElement('DIV');
+                msg.classList.add('card');
+                msg.classList.add('error');
+                msg.innerHTML = response.message;
+                content.insertBefore(msg, studentdata.nextSibling);
+
+                setTimeout(() => {
+                    content.removeChild(msg);
+                }, 5000);
+            } else {
+                let selectclassform = document.createElement('form');
+                let tempString;
+
+                tempString =
+                    '<label for="class"><b>Klasse/Tutorium:</b></label>' +
+                    '<select name="class" id="class_select">';
+                for (let i = 0; i < response.classes.length; i++) {
+                    const row = response.classes[i];
+                    tempString =
+                        tempString +
+                        '<option value="' +
+                        row.id +
+                        '">' +
+                        row.name +
+                        '</option>';
+                }
+                tempString =
+                    tempString +
+                    '</select>' +
+                    '<br/>' +
+                    '<input type="submit" value="Speichern" />';
+
+                selectclassform.innerHTML = tempString;
+                studentdata.replaceChild(
+                    selectclassform,
+                    document.querySelector('#edit_student_class')
+                );
+                selectclassform.addEventListener('submit', onSaveClass);
+            }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            const msg = document.createElement('DIV');
+            msg.classList.add('card');
+            msg.classList.add('error');
+            msg.innerHTML = 'Fehler';
+            content.insertBefore(msg, studentdata.nextSibling);
+
+            setTimeout(() => {
+                content.removeChild(msg);
+            }, 5000);
+            content.removeChild(load);
+        });
+}
+
+// save student class
+function onSaveClass(e) {
+    let saveClassUrl = 'api/set_class.php';
+
+    e.preventDefault();
+    console.log('submitted');
+
+    content.insertBefore(load, studentdata.nextSibling);
+
+    const classid = {
+        class_id: document.querySelector('#class_select').value
+    };
+    fetch(saveClassUrl, {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(data), // data can be `string` or {object}!
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + jwt
+        }
+    })
+        .then(res => res.json())
+        .then(response => {
+            console.log('Success:', JSON.stringify(response));
+
+            if (response.error) {
+                const msg = document.createElement('DIV');
+                msg.classList.add('card');
+                msg.classList.add('error');
+                msg.innerHTML = response.message;
+                content.insertBefore(msg, studentdata.nextSibling);
+
+                setTimeout(() => {
+                    content.removeChild(msg);
+                }, 5000);
+            } else {
+                location.reload();
+            }
+            content.removeChild(load);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const msg = document.createElement('DIV');
+            msg.classList.add('card');
+            msg.classList.add('error');
+            msg.innerHTML = 'Fehler';
+            content.insertBefore(msg, studentdata.nextSibling);
+
+            setTimeout(() => {
+                content.removeChild(msg);
+            }, 5000);
+            content.removeChild(load);
+        });
 }
 
 // Create student and set year
