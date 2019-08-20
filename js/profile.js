@@ -219,7 +219,7 @@ function onSaveClass(e) {
 
     content.insertBefore(load, studentdata.nextSibling);
 
-    const classid = {
+    const data = {
         class_id: document.querySelector('#class_select').value
     };
     fetch(saveClassUrl, {
