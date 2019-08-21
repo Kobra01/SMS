@@ -36,19 +36,19 @@ $student->user_id = $jwt_decoded->data->id;
 // get the user data
 if(!$student->getStudentData()){
 
+    if ($student->id == 0) {
+        // set response code & answer
+        http_response_code(201);
+        echo json_encode(array(
+            "error" => TRUE,
+            "error_code" => 1,
+            "message" => "Student not exist."));
+        die();
+    }
+
     // message if unable to create user
     http_response_code(400);
     echo json_encode(array("error" => TRUE, "message" => "Unable to get student data."));
-    die();
-}
-
-if ($student->id == 0) {
-    // set response code & answer
-    http_response_code(201);
-    echo json_encode(array(
-        "error" => TRUE,
-        "error_code" => 1,
-        "message" => "Student not exist."));
     die();
 }
 

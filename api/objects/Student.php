@@ -120,6 +120,7 @@ class Student{
         }
         
         if ($stmt->rowCount() < 1) {
+            $this->id = 0;
             return false;
         }
 
