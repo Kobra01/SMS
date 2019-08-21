@@ -92,7 +92,9 @@ class Course{
                     WHERE
                         student = :student
                     AND
-                        course = id';
+                        course = id
+                    ORDER BY
+						name ASC';
 
         // prepare the query
         $stmt = $this->conn->prepare($query);
@@ -123,7 +125,9 @@ class Course{
                     FROM
                         ' . $this->table_name . '
                     WHERE
-                        year = :year';
+                        year = :year
+                    ORDER BY
+						name ASC';
 
         // prepare the query
         $stmt = $this->conn->prepare($query);
@@ -154,14 +158,20 @@ class Course{
         $query = '  DELETE FROM
                         ' . $this->table_member . '
                     WHERE
-                        student = :student';
+                        student = :student
+                    AND
+                        course = :course';
 
         // prepare the query
         $stmt = $this->conn->prepare($query);
 
-        $this->student = htmlspecialchars(strip_tags($this->student));
+        // sanitize
+        $this->student=htmlspecialchars(strip_tags($this->student));
+        $this->id=htmlspecialchars(strip_tags($this->id));
 
+        // bind the values
         $stmt->bindParam(':student', $this->student);
+        $stmt->bindParam(':course', $this->id);
 
         // exit if failed
         if(!$stmt->execute()){
