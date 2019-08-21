@@ -213,7 +213,8 @@ function onEditCourse(e) {
                     content.removeChild(msg);
                 }, 5000);
             } else {
-                let selectcourseform = document.createElement('form');
+                let selectaddcourseform = document.createElement('form');
+                let selectremovecourseform = document.createElement('form');
                 let tempString;
 
                 tempString =
@@ -231,7 +232,9 @@ function onEditCourse(e) {
                 }
                 tempString =
                     tempString +
-                    '</select><input type="submit" value="Entfernen" />' +
+                    '</select><input type="submit" value="Entfernen" />';
+                selectremovecourseform.innerHTML = tempString;
+                tempString =
                     '<br><label for="course"><b>Neuer Kurs:</b></label>' +
                     '<select name="course" id="course_select">';
                 for (let i = 0; i < response.courses.length; i++) {
@@ -248,12 +251,131 @@ function onEditCourse(e) {
                     tempString +
                     '</select><input type="submit" value="Speichern" />';
 
-                selectcourseform.innerHTML = tempString;
+                selectaddcourseform.innerHTML = tempString;
                 studentcourses.replaceChild(
-                    selectcourseform,
+                    selectaddcourseform,
                     document.querySelector('#edit_student_course')
                 );
+                studentcourses.insertBefore(
+                    selectremovecourseform,
+                    selectaddcourseform
+                );
+                selectremovecourseform.addEventListener(
+                    'submit',
+                    onRemoveCourse
+                );
+                selectaddcourseform.addEventListener('submit', onAddCourse);
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const msg = document.createElement('DIV');
+            msg.classList.add('card');
+            msg.classList.add('error');
+            msg.innerHTML = 'Fehler';
+            content.insertBefore(msg, studentcourses.nextSibling);
+
+            setTimeout(() => {
+                content.removeChild(msg);
+            }, 5000);
+            content.removeChild(load);
+        });
+}
+
+// remove student course
+function onRemoveCourse(e) {
+    let removeCourseUrl = 'api/remove_course.php';
+
+    e.preventDefault();
+    console.log('submitted');
+
+    content.insertBefore(load, studentcourses.nextSibling);
+
+    const data = {
+        course_id: document.querySelector('#course_old_select').value
+    };
+    fetch(removeCourseUrl, {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(data), // data can be `string` or {object}!
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + jwt
+        }
+    })
+        .then(res => res.json())
+        .then(response => {
+            console.log('Success:', JSON.stringify(response));
+
+            if (response.error) {
+                const msg = document.createElement('DIV');
+                msg.classList.add('card');
+                msg.classList.add('error');
+                msg.innerHTML = response.message;
+                content.insertBefore(msg, studentcourses.nextSibling);
+
+                setTimeout(() => {
+                    content.removeChild(msg);
+                }, 5000);
+            } else {
+                location.reload();
+            }
+            content.removeChild(load);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const msg = document.createElement('DIV');
+            msg.classList.add('card');
+            msg.classList.add('error');
+            msg.innerHTML = 'Fehler';
+            content.insertBefore(msg, studentcourses.nextSibling);
+
+            setTimeout(() => {
+                content.removeChild(msg);
+            }, 5000);
+            content.removeChild(load);
+        });
+}
+
+// add student course
+function onAddCourse(e) {
+    let setCourseUrl = 'api/set_course.php';
+
+    e.preventDefault();
+    console.log('submitted');
+
+    content.insertBefore(load, studentcourses.nextSibling);
+
+    const data = {
+        course_id: document.querySelector('#course_select').value
+    };
+    fetch(setCourseUrl, {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(data), // data can be `string` or {object}!
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + jwt
+        }
+    })
+        .then(res => res.json())
+        .then(response => {
+            console.log('Success:', JSON.stringify(response));
+
+            if (response.error) {
+                const msg = document.createElement('DIV');
+                msg.classList.add('card');
+                msg.classList.add('error');
+                msg.innerHTML = response.message;
+                content.insertBefore(msg, studentcourses.nextSibling);
+
+                setTimeout(() => {
+                    content.removeChild(msg);
+                }, 5000);
+            } else {
+                location.reload();
+            }
+            content.removeChild(load);
         })
         .catch(error => {
             console.error('Error:', error);
