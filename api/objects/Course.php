@@ -114,6 +114,37 @@ class Course{
         return true;
     }
 
+    // get courses for one year
+    public function getCourses(){
+
+        // Create Query
+        $query = '  SELECT
+                        id, name
+                    FROM
+                        ' . $this->table_name . '
+                    WHERE
+                        year = :year';
+
+        // prepare the query
+        $stmt = $this->conn->prepare($query);
+
+        // sanitize
+        $this->year=htmlspecialchars(strip_tags($this->year));
+
+        // bind the values
+        $stmt->bindParam(':year', $this->year);
+
+        // exit if execute failed
+        if(!$stmt->execute()){
+            return false;
+        }
+
+        // get record details / values
+        $this->courses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return true;
+    }
+
     // CRUD -> Delete
 
     // remove student from course
