@@ -131,6 +131,43 @@ if (jwtdata.type == 'STNT') {
         .catch(error => console.error('Error:', error));
 }
 
+// --------- Schüler Kurse ---------
+let studentcourses;
+
+if (jwtdata.type == 'STNT') {
+    let studentCoursesUrl = 'api/get_courses_of_student.php';
+    fetch(studentCoursesUrl, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + jwt
+        }
+    })
+        .then(res => res.json())
+        .then(response => {
+            console.log('Success:', JSON.stringify(response));
+
+            studentcourses = document.createElement('DIV');
+            studentcourses.classList.add('card');
+
+            if (!response.error) {
+                let tempString;
+
+                tempString = '<br><h2>Kurse:</h2>';
+                for (let i = 0; i < response.courses.length; i++) {
+                    const row = response.courses[i];
+                    tempString = tempString + '<br> - ' + row.name;
+                }
+                tempString = '<br/>';
+
+                studentcourses.innerHTML = tempString;
+            }
+            content.insertBefore(studentcourses, spinner);
+        })
+        .catch(error => console.error('Error:', error));
+}
+
 //content.removeChild(spinner);
 
 // get possible classes for student
