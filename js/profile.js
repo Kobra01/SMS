@@ -133,6 +133,7 @@ if (jwtdata.type == 'STNT') {
 
 // --------- Schüler Kurse ---------
 let studentcourses;
+let coursesofstudent;
 
 if (jwtdata.type == 'STNT') {
     let studentCoursesUrl = 'api/get_courses_of_student.php';
@@ -153,22 +154,121 @@ if (jwtdata.type == 'STNT') {
 
             if (!response.error) {
                 let tempString;
+                coursesofstudent = response.courses;
 
                 tempString = '<br><h2>Kurse:</h2>';
                 for (let i = 0; i < response.courses.length; i++) {
                     const row = response.courses[i];
                     tempString = tempString + '<br> - ' + row.name;
                 }
-                tempString = '<br/>';
+                tempString =
+                    tempString +
+                    '<br/><form id="edit_student_course"><input type="submit" value="Bearbeiten" /></form>';
 
                 studentcourses.innerHTML = tempString;
+                content.insertBefore(studentcourses, spinner);
+                document
+                    .querySelector('#edit_student_course')
+                    .addEventListener('submit', onEditCourse);
+            } else {
+                studentcourses.classList.add('error');
+                studentcourses.innerHTML = response.message;
+                content.insertBefore(studentcourses, spinner);
             }
-            content.insertBefore(studentcourses, spinner);
         })
         .catch(error => console.error('Error:', error));
 }
 
 //content.removeChild(spinner);
+
+// get possible courses
+function onEditCourse(e) {
+    let getCoursesUrl = 'api/get_courses.php';
+
+    e.preventDefault();
+    console.log('submitted');
+
+    content.insertBefore(load, studentcourses.nextSibling);
+
+    fetch(getCoursesUrl, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + jwt
+        }
+    })
+        .then(res => res.json())
+        .then(response => {
+            console.log('Success:', JSON.stringify(response));
+            content.removeChild(load);
+            if (response.error) {
+                const msg = document.createElement('DIV');
+                msg.classList.add('card');
+                msg.classList.add('error');
+                msg.innerHTML = response.message;
+                content.insertBefore(msg, studentcourses.nextSibling);
+
+                setTimeout(() => {
+                    content.removeChild(msg);
+                }, 5000);
+            } else {
+                let selectcourseform = document.createElement('form');
+                let tempString;
+
+                tempString =
+                    '<br><label for="course_old"><b>Zu entfernender Kurs:</b></label>' +
+                    '<select name="course_old" id="course_old_select">';
+                for (let i = 0; i < coursesofstudent.length; i++) {
+                    const row = coursesofstudent[i];
+                    tempString =
+                        tempString +
+                        '<option value="' +
+                        row.id +
+                        '">' +
+                        row.name +
+                        '</option>';
+                }
+                tempString =
+                    tempString +
+                    '</select><input type="submit" value="Entfernen" />' +
+                    '<br><label for="course"><b>Neuer Kurs:</b></label>' +
+                    '<select name="course" id="course_select">';
+                for (let i = 0; i < response.courses.length; i++) {
+                    const row = response.courses[i];
+                    tempString =
+                        tempString +
+                        '<option value="' +
+                        row.id +
+                        '">' +
+                        row.name +
+                        '</option>';
+                }
+                tempString =
+                    tempString +
+                    '</select><input type="submit" value="Speichern" />';
+
+                selectcourseform.innerHTML = tempString;
+                studentcourses.replaceChild(
+                    selectcourseform,
+                    document.querySelector('#edit_student_course')
+                );
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const msg = document.createElement('DIV');
+            msg.classList.add('card');
+            msg.classList.add('error');
+            msg.innerHTML = 'Fehler';
+            content.insertBefore(msg, studentcourses.nextSibling);
+
+            setTimeout(() => {
+                content.removeChild(msg);
+            }, 5000);
+            content.removeChild(load);
+        });
+}
 
 // get possible classes for student
 function onEditClass(e) {
