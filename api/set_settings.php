@@ -35,6 +35,7 @@ if (!isset($data->subject_settings)) {
 
 // set userid for settings
 $settings->uid = $jwt_decoded->data->id;
+$settings->subject_settings = $data->subject_settings;
 
 // set the course to user
 if(!$settings->updateSettings()){
