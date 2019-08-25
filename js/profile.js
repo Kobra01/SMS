@@ -288,7 +288,7 @@ function onEditSettings(e) {
                     '</div><br/><label for="new_subject_color"><b>Weiteres Fach:</b></label>' +
                     '<select name="new_subject_color" id="new_subject_color_select">' +
                     dropdown +
-                    '</select><input id="new_subject_color" class="btn" type="button" value="Hinzufügen" /><br>';
+                    '</select><input id="new_subject_color" class="btn" type="button" value="Hinzufügen/Entfernen" /><br>';
 
                 tempString +=
                     '<br/><input type="submit" value="Speichern" /></form>';
