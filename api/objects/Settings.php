@@ -78,7 +78,7 @@ class Settings{
         // get record details / values
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         // assign values to object properties
-        $this->subject_settings = $row['subject'];
+        $this->subject_settings = htmlspecialchars_decode($row['subject']);
         return true;
     }
 
