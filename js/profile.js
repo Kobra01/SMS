@@ -159,10 +159,9 @@ if (jwtdata.type == 'STNT') {
                 tempString = '<br><h2>Kurse:</h2>';
                 for (let i = 0; i < response.courses.length; i++) {
                     const row = response.courses[i];
-                    tempString = tempString + '<br> - ' + row.name;
+                    tempString += '<br> - ' + row.name;
                 }
-                tempString =
-                    tempString +
+                tempString +=
                     '<br/><form id="edit_student_course"><input type="submit" value="Bearbeiten" /></form>';
 
                 studentcourses.innerHTML = tempString;
@@ -179,7 +178,240 @@ if (jwtdata.type == 'STNT') {
         .catch(error => console.error('Error:', error));
 }
 
+// --------- Settings bearbeiten ---------
+let settingscard;
+let sub_settings;
+
+let settingsUrl = 'api/get_settings.php';
+fetch(settingsUrl, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + jwt
+    }
+})
+    .then(res => res.json())
+    .then(response => {
+        console.log('Success:', JSON.stringify(response));
+
+        settingscard = document.createElement('DIV');
+        settingscard.classList.add('card');
+
+        if (!response.error) {
+            let tempString;
+            sub_settings = JSON.parse(response.subject_settings);
+
+            tempString = '<br><h2>Einstellungen:</h2>';
+            tempString += '<br><h3>Fächer-farben:</h3>';
+            for (subject in sub_settings) {
+                tempString +=
+                    '<br> - <b>' +
+                    subject +
+                    ':</b> <font color="' +
+                    sub_settings[subject] +
+                    '">' +
+                    sub_settings[subject] +
+                    '</font>';
+            }
+
+            tempString +=
+                '<br/><form id="show_settings"><input type="submit" value="Bearbeiten" /></form>';
+
+            settingscard.innerHTML = tempString;
+            content.insertBefore(settingscard, spinner);
+            document
+                .querySelector('#show_settings')
+                .addEventListener('submit', onEditSettings);
+        } else {
+            settingscard.classList.add('error');
+            settingscard.innerHTML = response.message;
+            content.insertBefore(settingscard, spinner);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+
 //content.removeChild(spinner);
+
+var color_settings;
+
+// edit settings
+function onEditSettings(e) {
+    let getSubjectsUrl = 'api/get_subjects.php';
+
+    e.preventDefault();
+    console.log('submitted');
+
+    content.insertBefore(load, settingscard.nextSibling);
+    fetch(getSubjectsUrl, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + jwt
+        }
+    })
+        .then(res => res.json())
+        .then(response => {
+            console.log('Success:', JSON.stringify(response));
+            content.removeChild(load);
+
+            if (!response.error) {
+                let tempString;
+                let dropdown;
+
+                for (let i = 0; i < response.subjects.length; i++) {
+                    const row = response.subjects[i];
+                    dropdown +=
+                        '<option value="' +
+                        row.short +
+                        '">' +
+                        row.name +
+                        '</option>';
+                }
+
+                tempString = '<br><h2>Einstellungen:</h2>';
+                tempString +=
+                    '<br><h3>Fächer-farben:</h3><form id="edit_settings"><div id="color_settings">';
+                for (subject in sub_settings) {
+                    tempString +=
+                        '<p subject="' +
+                        subject +
+                        '"><br> - <b>' +
+                        subject +
+                        ':</b> <input type="color" value="' +
+                        sub_settings[subject] +
+                        '"></p>';
+                }
+
+                tempString +=
+                    '</div><br/><label for="new_subject_color"><b>Weiteres Fach:</b></label>' +
+                    '<select name="new_subject_color" id="new_subject_color_select">' +
+                    dropdown +
+                    '</select><input id="new_subject_color" class="btn" type="button" value="Hinzufügen" /><br>';
+
+                tempString +=
+                    '<br/><input type="submit" value="Speichern" /></form>';
+
+                settingscard.innerHTML = tempString;
+                color_settings = document.querySelectorAll('p[subject]');
+                document
+                    .querySelector('#new_subject_color')
+                    .addEventListener('click', onClickNewColor);
+                document
+                    .querySelector('#edit_settings')
+                    .addEventListener('submit', onSaveSettings);
+            } else {
+                settingscard.classList.add('error');
+                settingscard.innerHTML = response.message;
+                content.insertBefore(settingscard, spinner);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const msg = document.createElement('DIV');
+            msg.classList.add('card');
+            msg.classList.add('error');
+            msg.innerHTML = 'Fehler';
+            content.insertBefore(msg, settingscard.nextSibling);
+
+            setTimeout(() => {
+                content.removeChild(msg);
+            }, 5000);
+            content.removeChild(load);
+        });
+}
+
+// save new color
+function onSaveSettings(e) {
+    let setSettingsUrl = 'api/set_settings.php';
+    let subsetObject = {};
+    e.preventDefault();
+    console.log('submitted');
+
+    content.insertBefore(load, settingscard.nextSibling);
+
+    for (let i = 0; i < color_settings.length; i++) {
+        const subset = color_settings[i];
+        subsetObject[subset.getAttribute('subject')] = subset.querySelector(
+            'input'
+        ).value;
+    }
+
+    var data = {
+        subject_settings: JSON.stringify(subsetObject)
+    };
+    fetch(setSettingsUrl, {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(data), // data can be `string` or {object}!
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + jwt
+        }
+    })
+        .then(res => res.json())
+        .then(response => {
+            console.log('Success:', JSON.stringify(response));
+
+            if (response.error) {
+                const msg = document.createElement('DIV');
+                msg.classList.add('card');
+                msg.classList.add('error');
+                msg.innerHTML = response.message;
+                content.insertBefore(msg, settingscard.nextSibling);
+
+                setTimeout(() => {
+                    content.removeChild(msg);
+                }, 5000);
+            } else {
+                location.reload();
+            }
+            content.removeChild(load);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const msg = document.createElement('DIV');
+            msg.classList.add('card');
+            msg.classList.add('error');
+            msg.innerHTML = 'Fehler';
+            content.insertBefore(msg, settingscard.nextSibling);
+
+            setTimeout(() => {
+                content.removeChild(msg);
+            }, 5000);
+            content.removeChild(load);
+        });
+}
+
+// add new element for new color
+function onClickNewColor(e) {
+    e.preventDefault();
+    console.log('clicked');
+    for (let i = 0; i < color_settings.length; i++) {
+        const subset = color_settings[i];
+        if (
+            subset.getAttribute('subject') ==
+            document.querySelector('#new_subject_color_select').value
+        ) {
+            document.querySelector('div#color_settings').removeChild(subset);
+            color_settings = document.querySelectorAll('p[subject]');
+            return;
+        }
+    }
+
+    let newColorElement = document.createElement('p');
+    newColorElement.setAttribute(
+        'subject',
+        document.querySelector('#new_subject_color_select').value
+    );
+    newColorElement.innerHTML =
+        '<br> - <b>' +
+        document.querySelector('#new_subject_color_select').value +
+        ':</b> <input type="color" value="#000000"></p>';
+    document.querySelector('#color_settings').appendChild(newColorElement);
+    color_settings = document.querySelectorAll('p[subject]');
+}
 
 // get possible courses
 function onEditCourse(e) {
