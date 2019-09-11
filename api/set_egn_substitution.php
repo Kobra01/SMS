@@ -35,7 +35,9 @@ if (!isset($data->substitution_json)) {
 
 $substitution_array = json_decode($data->substitution_json);
 
-foreach ($substitution_array as $substitute) {
+foreach ($substitution_array as $key => $substitute) {
+
+    $substitute = (array) $substitute;
     
     $sub->error = (isset($substitute['error'])) ? $substitute['error'] : TRUE ;
     $sub->date = (isset($substitute['date'])) ? $substitute['date'] : '01.01.2000';
